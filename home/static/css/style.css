@@ -1,0 +1,80 @@
+.container{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.testimonial-carousel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px; /* Adjust the gap as needed */
+}
+
+.testimonial-item {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    flex: 1 1 45%; /* Adjust width based on the number of cards per row */
+    margin: 20px;
+}
+
+.testimonial {
+    max-width: 100%;
+    padding: 0 10%;
+}
+
+.testimonial h6, .testimonial h4 {
+    color: #fff;
+}
+
+.testimonial-item p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.testimonial-item img {
+    width: 50px;
+    height: 50px;
+}
+
+.d-flex.align-items-center {
+    margin-top: 15px;
+}
+
+.testimonial-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+@keyframes slideLeft {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.filter-section {
+    width: 20%;
+}
+.job-cards-section {
+    width: 80%;
+}
+.job-card {
+    margin-bottom: 20px;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.internship-cards-section {
+    width: 80%;
+}
+.internship-card {
+    margin-bottom: 20px;
+}
