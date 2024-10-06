@@ -1,18 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# Company table
+class Company(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Connect with the User model
+    company_name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=15)
+    email = models.EmailField(max_length=255, default=f"{company_name}@gmail.com")
+    website = models.URLField(max_length=255, default=f"{company_name}.com")
+    location = models.CharField(max_length=255, blank=True, null=True)
 
-# Users table, extended from Django's built-in User model
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    join_date = models.DateTimeField(auto_now_add=True)
-    is_student = models.BooleanField(default=True)
+    def __str__(self):
+        return self.company_name
+
+
+# Student table
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Connect with the User model
+    college = models.CharField(max_length=255)
+    branch = models.CharField(max_length=255)
+    github = models.URLField(blank=True, null=True)
+    linkedin = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
 
 
 # Contest Model
 class Contest(models.Model):
-    title = models.CharField(max_length=1000)
     link = models.URLField()
+    title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)  # A short description of the contest
     start_date = models.DateField(blank=True, null=True)  # Optional start date
     end_date = models.DateField(blank=True, null=True)  # Optional end date
@@ -21,10 +39,6 @@ class Contest(models.Model):
     tags = models.CharField(max_length=300, blank=True, null=True)  # Tags like AI, ML, DS, etc.
     participants = models.IntegerField(default=0)  # Number of participants
     likes = models.IntegerField(default=0)  # Field to store the number of likes
-
-    def __str__(self):
-        return self.title
-
 
 # News Model
 class News(models.Model):
@@ -48,23 +62,10 @@ class Contact(models.Model):
     q_message = models.TextField()
 
 
-# Company table
-class Company(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    company_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=15)
-    email = models.EmailField()
-    website = models.URLField()
-    location = models.CharField(max_length=255)
-    logo = models.ImageField(upload_to='company_logos/')
-
-    def __str__(self):
-        return self.company_name
-
-
 # Jobs table
 class Job(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, default='Job')
     description = models.TextField()
     field = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
@@ -82,6 +83,7 @@ class Job(models.Model):
 # Internship table (Similar to Job)
 class Internship(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255, default='Internship')
     description = models.TextField()
     field = models.CharField(max_length=255)
     category = models.CharField(max_length=255)
@@ -95,61 +97,3 @@ class Internship(models.Model):
     def __str__(self):
         return f"{self.company} - {self.category}"
 
-
-# Student table
-class Student(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    college = models.CharField(max_length=255)
-    branch = models.CharField(max_length=255)
-    github = models.URLField()
-    linkedin = models.URLField()
-    resume = models.FileField(upload_to='resumes/')
-
-    def __str__(self):
-        return self.user.user.username
-
-
-# Student Dashboard table
-class StudentDashboard(models.Model):
-    student = models.OneToOneField(Student, on_delete=models.CASCADE)
-    jobs_applied = models.JSONField()  # To store hashmap of job applications
-    internship_applied = models.JSONField()  # To store hashmap of internship applications
-
-
-# Company Dashboard table
-class CompanyDashboard(models.Model):
-    company = models.OneToOneField(Company, on_delete=models.CASCADE)
-    jobs = models.ManyToManyField(Job)
-    internships = models.ManyToManyField(Internship)
-
-
-# Student Bookmark table
-class StudentBookmark(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    jobs = models.ManyToManyField(Job)
-    internships = models.ManyToManyField(Internship)
-    bookmark_date = models.DateTimeField(auto_now_add=True)
-
-
-# Job Application table
-class JobApplication(models.Model):
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    resume = models.FileField(upload_to='job_applications/')
-    cover_letter = models.TextField(blank=True, null=True)  # Optional cover letter
-    date_applied = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.student} applied for {self.job}"
-
-
-# Internship Application table
-class InternshipApplication(models.Model):
-    internship = models.ForeignKey(Internship, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    resume = models.FileField(upload_to='internship_applications/')
-    cover_letter = models.TextField(blank=True, null=True)  # Optional cover letter
-    date_applied = models.DateField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.student} applied for {self.internship}"

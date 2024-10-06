@@ -3,9 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company</title>
+    <title>Company Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>I am Company page</h1>
+    <div class="container mt-5">
+        <h1 class="text-center">Company Dashboard</h1>
+
+        <!-- Buttons to post a job or internship -->
+        <div class="d-flex justify-content-center mb-3">
+            <a href="/postjob/" class="btn btn-primary mr-3">Post a Job</a>
+            <a href="/postinternship/" class="btn btn-success">Post an Internship</a>
+        </div>
+
+        <!-- Display Posted Jobs -->
+        <div class="mt-4">
+            <h5>Your Posted Jobs</h5>
+            <ul class="list-group">
+                {% for job in jobs %}
+                    <li class="list-group-item">
+                        <h6>{{ job.title }}</h6>
+                        <p>{{ job.description }}</p>
+                        <p><strong>Field:</strong> {{ job.field }}</p>
+                        <p><strong>Category:</strong> {{ job.category }}</p>
+                        <p><strong>Pay Range:</strong> {{ job.pay_range }}</p>
+                        <p><strong>Location:</strong> {{ job.location }}</p>
+                        <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
+                        <p><strong>Skills:</strong> {{ job.skills }}</p>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No jobs posted yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Display Posted Internships -->
+        <div class="mt-4">
+            <h5>Your Posted Internships</h5>
+            <ul class="list-group">
+                {% for internship in internships %}
+                    <li class="list-group-item">
+                        <h6>{{ internship.title }}</h6>
+                        <p>{{ internship.description }}</p>
+                        <p><strong>Field:</strong> {{ internship.field }}</p>
+                        <p><strong>Category:</strong> {{ internship.category }}</p>
+                        <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                        <p><strong>Location:</strong> {{ internship.location }}</p>
+                        <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
+                        <p><strong>Skills:</strong> {{ internship.skills }}</p>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No internships posted yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

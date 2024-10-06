@@ -1,8 +1,8 @@
-from django.contrib import admin
-from django.urls import path
 from home.views import *
-from django.conf.urls.static import static
+from django.urls import path
 from django.conf import settings
+from django.contrib import admin
+from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
@@ -12,15 +12,17 @@ urlpatterns = [
     path('internship/', internship, name='internship'),
     path("contest/", contest, name='contest'),
     path("news/", news, name='news'),
+    path("contact/", contact, name='contact'),
 
     path("login/", login_page, name='login'),
     path("logout/", logout_page, name='logout'),
     path("signup/", signup, name='signup'),
 
-    path('student/', student, name='student_dashboard'),  # Student dashboard
-    path('company/', company, name='company_dashboard'),  # Company dashboard
-
-    path("contact/", contact, name='contact'),
+    path('student/', student, name='student'),
+    path('company/', company, name='company'),
+    
+    path('postjob/', postjob, name='postjob'),
+    path('postinternship/', postinternship, name='postinternship'),
 
     path('admin/', admin.site.urls),
 ]
