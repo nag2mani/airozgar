@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Dashboard</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Company Dashboard</h1>
@@ -21,6 +23,7 @@
             <h5>Your Posted Jobs</h5>
             <ul class="list-group">
                 {% for job in jobs %}
+                <div class="my-3">
                     <li class="list-group-item">
                         <h6>{{ job.title }}</h6>
                         <p>{{ job.description }}</p>
@@ -30,18 +33,25 @@
                         <p><strong>Location:</strong> {{ job.location }}</p>
                         <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
                         <p><strong>Skills:</strong> {{ job.skills }}</p>
+                        <div class="mt-2">
+                            <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_job' job.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        </div>
                     </li>
+                </div>
                 {% empty %}
-                    <li class="list-group-item">No jobs posted yet.</li>
+                <li class="list-group-item">No jobs posted yet.</li>
                 {% endfor %}
             </ul>
         </div>
 
         <!-- Display Posted Internships -->
         <div class="mt-4">
+            <hr>
             <h5>Your Posted Internships</h5>
             <ul class="list-group">
                 {% for internship in internships %}
+                <div class="my-3">
                     <li class="list-group-item">
                         <h6>{{ internship.title }}</h6>
                         <p>{{ internship.description }}</p>
@@ -51,9 +61,15 @@
                         <p><strong>Location:</strong> {{ internship.location }}</p>
                         <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
                         <p><strong>Skills:</strong> {{ internship.skills }}</p>
+                        <div class="mt-2">
+                            <a href="{% url 'edit_internship' internship.id %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_internship' internship.id %}"
+                                class="btn btn-sm btn-danger">Delete</a>
+                        </div>
                     </li>
+                </div>
                 {% empty %}
-                    <li class="list-group-item">No internships posted yet.</li>
+                <li class="list-group-item">No internships posted yet.</li>
                 {% endfor %}
             </ul>
         </div>
@@ -63,4 +79,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

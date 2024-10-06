@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-
+from django.shortcuts import get_object_or_404
 
 def home(request):
     return render(request, 'index.html')
@@ -124,6 +124,55 @@ def postinternship(request):
         return redirect('/company/')
 
     return render(request, 'postinternship.html')
+
+@login_required(login_url="/login/")
+def edit_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id, company=request.user.company)
+    if request.method == 'POST':
+        job.title = request.POST.get('title')
+        job.description = request.POST.get('description')
+        job.field = request.POST.get('field')
+        job.category = request.POST.get('category')
+        job.pay_range = request.POST.get('pay_range')
+        job.location = request.POST.get('location')
+        job.expiry_date = request.POST.get('expiry_date')
+        job.skills = request.POST.get('skills')
+        job.save()
+        messages.success(request, "Job updated successfully!")
+        return redirect('/company/')
+    return render(request, 'editjob.html', {'job': job})
+
+@login_required(login_url="/login/")
+def edit_internship(request, internship_id):
+    internship = get_object_or_404(Internship, id=internship_id, company=request.user.company)
+    if request.method == 'POST':
+        internship.title = request.POST.get('title')
+        internship.description = request.POST.get('description')
+        internship.field = request.POST.get('field')
+        internship.category = request.POST.get('category')
+        internship.stipend = request.POST.get('stipend')
+        internship.location = request.POST.get('location')
+        internship.expiry_date = request.POST.get('expiry_date')
+        internship.skills = request.POST.get('skills')
+        internship.save()
+        messages.success(request, "Internship updated successfully!")
+        return redirect('/company/')
+    return render(request, 'editinternship.html', {'internship': internship})
+
+
+@login_required(login_url="/login/")
+def delete_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id, company=request.user.company)
+    job.delete()
+    messages.success(request, "Job deleted successfully!")
+    return redirect('/company/')
+
+@login_required(login_url="/login/")
+def delete_internship(request, internship_id):
+    internship = get_object_or_404(Internship, id=internship_id, company=request.user.company)
+    internship.delete()
+    messages.success(request, "Internship deleted successfully!")
+    return redirect('/company/')
 
 
 def login_page(request):

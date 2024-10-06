@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Edit Job</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ job.title }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required>{{ job.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="field">Field</label>
+                <input type="text" class="form-control" id="field" name="field" value="{{ job.field }}" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" class="form-control" id="category" name="category" value="{{ job.category }}" required>
+            </div>
+            <div class="form-group">
+                <label for="pay_range">Pay Range</label>
+                <input type="text" class="form-control" id="pay_range" name="pay_range" value="{{ job.pay_range }}" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location" name="location" value="{{ job.location }}" required>
+            </div>
+            <div class="form-group">
+                <label for="expiry_date">Expiry Date</label>
+                <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ job.expiry_date }}" required>
+            </div>
+            <div class="form-group">
+                <label for="skills">Skills</label>
+                <textarea class="form-control" id="skills" name="skills" rows="3" required>{{ job.skills }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Job</button>
+        </form>
+    </div>
+</body>
+</html>

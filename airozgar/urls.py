@@ -24,6 +24,12 @@ urlpatterns = [
     path('postjob/', postjob, name='postjob'),
     path('postinternship/', postinternship, name='postinternship'),
 
+    path('editjob/<int:job_id>/', edit_job, name='edit_job'),
+    path('editinternship/<int:internship_id>/', edit_internship, name='edit_internship'),
+    
+    path('deletejob/<int:job_id>/', delete_job, name='delete_job'),
+    path('deleteinternship/<int:internship_id>/', delete_internship, name='delete_internship'),
+
     path('admin/', admin.site.urls),
 ]
 
