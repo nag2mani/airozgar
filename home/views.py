@@ -1,3 +1,4 @@
+from datetime import datetime
 from .models import *
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -12,12 +13,14 @@ def home(request):
 
 @login_required(login_url="/login/")
 def job(request):
-    return render(request, 'job.html')
+    jobs = Job.objects.all()
+    return render(request, 'job.html', {'jobs': jobs})
 
 
 @login_required(login_url="/login/")
 def internship(request):
-    return render(request, 'internship.html')
+    internships = Internship.objects.all()
+    return render(request, 'internship.html', {'internships': internships})
 
 
 @login_required(login_url="/login/")
@@ -52,7 +55,34 @@ def contact(request):
 
 @login_required(login_url="/login/")
 def student(request):
-    return render(request, 'student.html')
+    student = request.user.student
+    applied_jobs = Job.objects.filter(student_applied__has_key=str(student.id))
+    applied_internships = Internship.objects.filter(student_applied__has_key=str(student.id))
+    return render(request, 'student.html', {'applied_jobs': applied_jobs, 'applied_internships': applied_internships})
+
+@login_required(login_url="/login/")
+def apply_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    student = request.user.student
+    if str(student.id) not in job.student_applied:
+        job.student_applied[str(student.id)] = {'applied_date': datetime.now().strftime('%Y-%m-%d')}
+        job.save()
+        messages.success(request, "Applied for the job successfully!")
+    else:
+        messages.info(request, "You have already applied for this job.")
+    return redirect('/job/')
+
+@login_required(login_url="/login/")
+def apply_internship(request, internship_id):
+    internship = get_object_or_404(Internship, id=internship_id)
+    student = request.user.student
+    if str(student.id) not in internship.student_applied:
+        internship.student_applied[str(student.id)] = {'applied_date': datetime.now().strftime('%Y-%m-%d')}
+        internship.save()
+        messages.success(request, "Applied for the internship successfully!")
+    else:
+        messages.info(request, "You have already applied for this internship.")
+    return redirect('/internship/')
 
 
 @login_required(login_url="/login/")
@@ -194,7 +224,7 @@ def login_page(request):
 
             # Redirect based on whether the user is a student or a company
             if hasattr(user, 'student'):
-                return redirect('/student/')
+                return redirect('/')
             elif hasattr(user, 'company'):
                 return redirect('/company/')
 

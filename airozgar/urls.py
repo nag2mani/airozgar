@@ -19,6 +19,8 @@ urlpatterns = [
     path("signup/", signup, name='signup'),
 
     path('student/', student, name='student'),
+    path('applyjob/<int:job_id>/', apply_job, name='apply_job'),
+    path('applyinternship/<int:internship_id>/', apply_internship, name='apply_internship'),
     path('company/', company, name='company'),
     
     path('postjob/', postjob, name='postjob'),

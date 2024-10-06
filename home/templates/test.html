@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .job-card {
+            margin-bottom: 20px;
+        }
+        .filters {
+            position: sticky;
+            top: 10px;
+        }
+        .experience-slider {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left Filters Section -->
+        <div class="col-md-3">
+            <div class="filters">
+                <!-- Experience Slider -->
+                <div class="mb-4">
+                    <h5>Experience</h5>
+                    <input type="range" class="form-range experience-slider" min="0" max="25" value="5" id="experienceRange">
+                    <p>Experience: <span id="experienceValue">5</span> Years</p>
+                </div>
+
+                <!-- Salary Filter -->
+                <div class="mb-4">
+                    <h5>Salary</h5>
+                    <div>
+                        <input type="checkbox" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
+                        <input type="checkbox" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
+                        <input type="checkbox" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
+                    </div>
+                </div>
+
+                <!-- Location Filter -->
+                <div class="mb-4">
+                    <h5>Location</h5>
+                    <div>
+                        <input type="checkbox" id="location1" name="location" value="Mumbai"> Mumbai<br>
+                        <input type="checkbox" id="location2" name="location" value="Delhi"> Delhi<br>
+                        <input type="checkbox" id="location3" name="location" value="Gurugram"> Gurugram<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Job Listings Section -->
+        <div class="col-md-9">
+            <h3>Job Listings</h3>
+            <div class="row">
+                <!-- Example Job Card -->
+                {% for job in jobs %}
+                <div class="col-md-12 job-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ job.title }}</h5>
+                            <p class="card-text">{{ job.company }} | {{ job.location }} | Experience: {{ job.experience }} Yrs</p>
+                            <p class="card-text">Salary: {{ job.salary }} Lacs</p>
+                            <a href="{{ job.get_absolute_url }}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Update experience slider value
+    const experienceSlider = document.getElementById('experienceRange');
+    const experienceValue = document.getElementById('experienceValue');
+    experienceSlider.oninput = function() {
+        experienceValue.textContent = this.value;
+    };
+</script>
+</body>
+</html>

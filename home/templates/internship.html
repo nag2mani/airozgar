@@ -5,7 +5,7 @@
     <div class="container px-lg-5">
         <div class="row g-5 py-5">
             <div class="col-12 text-center">
-                <h1>AI, ML and Data Science Internship For Fresher</h1>
+                <h1>AI, ML and Data Science Internships For Freshers</h1>
             </div>
         </div>
     </div>
@@ -23,13 +23,33 @@
         </div>
 
         <div class="row">
-            <!-- Filter Section (20% width) -->
+            <!-- Filter Section (25% width) -->
             <div class="col-md-3 filter-section">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Filter Internships</h5>
+                        <h5 class="card-title">Filter Jobs</h5>
+
+                        <!-- Experience Filter -->
+                        <div class="mb-4">
+                            <label class="form-label">Experience (Years)</label>
+                            <input type="range" class="form-range" min="0" max="25" value="0" id="experienceRange">
+                            <p>Selected: <span id="experienceValue">0</span> Years</p>
+                        </div>
+
+                        <!-- Salary Filter -->
+                        <div class="mb-4">
+                            <h5>Salary (Lacs)</h5>
+                            <div>
+                                <input type="checkbox" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
+                                <input type="checkbox" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
+                                <input type="checkbox" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
+                                <input type="checkbox" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
+                                <input type="checkbox" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
+                            </div>
+                        </div>
+
                         <!-- Category Filter -->
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="category" class="form-label">Category</label>
                             <select id="category" class="form-select">
                                 <option selected>Choose...</option>
@@ -39,8 +59,9 @@
                                 <!-- Add more categories as needed -->
                             </select>
                         </div>
+
                         <!-- Subcategory Filter -->
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="subcategory" class="form-label">Subcategory</label>
                             <select id="subcategory" class="form-select">
                                 <option selected>Choose...</option>
@@ -50,27 +71,24 @@
                                 <!-- Add more subcategories as needed -->
                             </select>
                         </div>
-                        <!-- Date Range Filter -->
-                        <div class="mb-3">
-                            <label for="date-range" class="form-label">Date Range</label>
-                            <input type="date" id="start-date" class="form-control mb-2" placeholder="Start Date">
-                            <input type="date" id="end-date" class="form-control" placeholder="End Date">
-                        </div>
+
                         <!-- Location Filter -->
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="location" class="form-label">Location</label>
                             <input type="text" id="location" class="form-control" placeholder="Enter location">
                         </div>
-                        <!-- Internship Type Filter -->
-                        <div class="mb-3">
-                            <label for="internship-type" class="form-label">Internship Type</label>
-                            <select id="internship-type" class="form-select">
+
+                        <!-- Job Type Filter -->
+                        <div class="mb-4">
+                            <label for="job-type" class="form-label">Job Type</label>
+                            <select id="job-type" class="form-select">
                                 <option selected>Choose...</option>
                                 <option value="1">Remote</option>
                                 <option value="2">Onsite</option>
                                 <option value="3">Hybrid</option>
                             </select>
                         </div>
+
                         <!-- Apply Filter Button -->
                         <button class="btn btn-secondary w-100">Apply Filters</button>
                     </div>
@@ -79,36 +97,37 @@
 
             <!-- Internship Cards Section (80% width) -->
             <div class="col-md-9 internship-cards-section">
-                <div class="row">
-                    <!-- Internship Card 1 -->
-                    <div class="col-md-12 internship-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">AI Research Intern</h5>
-                                <p class="card-text">Location: New York, USA</p>
-                                <p class="card-text">Internship Type: Remote</p>
-                                <p class="card-text">Posted on: 2024-09-30</p>
-                                <a href="#" class="btn btn-outline-secondary">View Details</a>
-                            </div>
-                        </div>
+                <h1 class="text-center">Available Internships</h1>
+                <ul class="list-group">
+                    {% for internship in internships %}
+                    <div class="my-3">
+                        <li class="list-group-item">
+                            <h6>{{ internship.title }}</h6>
+                            <p>{{ internship.description }}</p>
+                            <p><strong>Field:</strong> {{ internship.field }}</p>
+                            <p><strong>Category:</strong> {{ internship.category }}</p>
+                            <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                            <p><strong>Location:</strong> {{ internship.location }}</p>
+                            <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
+                            <p><strong>Skills:</strong> {{ internship.skills }}</p>
+                            <a href="{% url 'apply_internship' internship.id %}">Apply</a>
+                        </li>
                     </div>
-                    <!-- Internship Card 2 -->
-                    <div class="col-md-12 internship-card">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Data Science Intern</h5>
-                                <p class="card-text">Location: San Francisco, USA</p>
-                                <p class="card-text">Internship Type: Onsite</p>
-                                <p class="card-text">Posted on: 2024-09-28</p>
-                                <a href="#" class="btn btn-outline-secondary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add more internship cards as needed -->
-                </div>
+                    {% empty %}
+                        <li class="list-group-item">No internships available.</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
-{%endblock%}
+<!-- JavaScript for Experience Slider -->
+<script>
+    const experienceSlider = document.getElementById('experienceRange');
+    const experienceValue = document.getElementById('experienceValue');
+    experienceSlider.oninput = function() {
+        experienceValue.textContent = this.value;
+    };
+</script>
+{% endblock %}

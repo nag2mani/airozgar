@@ -1,11 +1,42 @@
+<!-- templates/student.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student</title>
+    <title>Student Dashboard</title>
+    <!-- Add your CSS links here -->
 </head>
 <body>
-    <h1>I am student page</h1>
+    <h1>Welcome, {{ request.user.username }}!</h1>
+    <h2>Applied Jobs</h2>
+    <ul>
+        {% for job in applied_jobs %}
+            <li>
+                <strong>{{ job.title }}</strong> at {{ job.company.company_name }}
+                <p>{{ job.description }}</p>
+                <p>Location: {{ job.location }}</p>
+                <p>Expiry Date: {{ job.expiry_date }}</p>
+                <p>Skills: {{ job.skills }}</p>
+            </li>
+        {% empty %}
+            <li>No jobs applied yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Applied Internships</h2>
+    <ul>
+        {% for internship in applied_internships %}
+            <li>
+                <strong>{{ internship.title }}</strong> at {{ internship.company.company_name }}
+                <p>{{ internship.description }}</p>
+                <p>Location: {{ internship.location }}</p>
+                <p>Expiry Date: {{ internship.expiry_date }}</p>
+                <p>Skills: {{ internship.skills }}</p>
+            </li>
+        {% empty %}
+            <li>No internships applied yet.</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
