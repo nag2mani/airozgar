@@ -28,6 +28,9 @@
       {% if request.user.is_authenticated and request.user.student %}
       <a href="/student/" class="text-white nav-item btn btn-secondary text-light rounded-pill">Dashboard</a>
       {% endif %}
+      {% if request.user.is_authenticated and request.user.company %}
+      <a href="/company/" class="text-white nav-item btn btn-secondary text-light rounded-pill">Dashboard</a>
+      {% endif %}
       <a href="/job/" class="text-white nav-item btn btn-secondary text-light rounded-pill">Fresher Jobs</a>
       <a href="/internship/" class="text-white nav-item btn btn-secondary text-light rounded-pill">Internships</a>
       <a href="/contest/" class="text-white nav-item btn btn-secondary text-light rounded-pill">Competitions</a>
@@ -38,7 +41,7 @@
     <a href="#" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">{{ request.user.first_name }}</a>
     <a href="/logout/" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Logout</a>
     {% else %}
-    <a href="/signup/" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Sign Up</a>
+    <a href="/login/" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Log In</a>
     {% endif %}
   </div>
 </nav>

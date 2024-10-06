@@ -274,7 +274,7 @@ def login_page(request):
 
             # Redirect based on whether the user is a student or a company
             if hasattr(user, 'student'):
-                return redirect('/')
+                return redirect('/student/')
             elif hasattr(user, 'company'):
                 return redirect('/company/')
 
