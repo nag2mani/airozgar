@@ -9,6 +9,8 @@
 </head>
 <body>
     <h1>Welcome, {{ request.user.username }}!</h1>
+    <a href="{% url 'edit_student' %}">Edit Student Profile</a>
+    
     <h2>Applied Jobs</h2>
     <ul>
         {% for job in applied_jobs %}

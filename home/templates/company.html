@@ -11,6 +11,8 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Company Dashboard</h1>
+        <h2>Welcome, {{ request.user.company.company_name }}!</h2>
+        <a href="{% url 'edit_company' %}">Edit Company Profile</a>
 
         <!-- Buttons to post a job or internship -->
         <div class="d-flex justify-content-center mb-3">

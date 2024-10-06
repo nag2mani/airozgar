@@ -1,0 +1,29 @@
+<!-- templates/editstudent.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student Profile</title>
+    <!-- Add your CSS links here -->
+</head>
+<body>
+    <h1>Edit Student Profile</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="college">College:</label>
+        <input type="text" id="college" name="college" value="{{ student.college }}" required><br><br>
+
+        <label for="branch">Branch:</label>
+        <input type="text" id="branch" name="branch" value="{{ student.branch }}" required><br><br>
+
+        <label for="github">GitHub:</label>
+        <input type="url" id="github" name="github" value="{{ student.github }}"><br><br>
+
+        <label for="linkedin">LinkedIn:</label>
+        <input type="url" id="linkedin" name="linkedin" value="{{ student.linkedin }}"><br><br>
+
+        <button type="submit">Update Profile</button>
+    </form>
+</body>
+</html>

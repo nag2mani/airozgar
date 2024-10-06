@@ -61,6 +61,20 @@ def student(request):
     return render(request, 'student.html', {'applied_jobs': applied_jobs, 'applied_internships': applied_internships})
 
 @login_required(login_url="/login/")
+def edit_student(request):
+    student = get_object_or_404(Student, user=request.user)
+    if request.method == 'POST':
+        student.college = request.POST.get('college')
+        student.branch = request.POST.get('branch')
+        student.github = request.POST.get('github')
+        student.linkedin = request.POST.get('linkedin')
+        student.save()
+        messages.success(request, "Student profile updated successfully!")
+        return redirect('/student/')
+    return render(request, 'editstudent.html', {'student': student})
+
+
+@login_required(login_url="/login/")
 def apply_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     student = request.user.student
@@ -71,6 +85,7 @@ def apply_job(request, job_id):
     else:
         messages.info(request, "You have already applied for this job.")
     return redirect('/job/')
+
 
 @login_required(login_url="/login/")
 def apply_internship(request, internship_id):
@@ -92,6 +107,21 @@ def company(request):
     jobs = Job.objects.filter(company=company)
     internships = Internship.objects.filter(company=company)
     return render(request, 'company.html', {'jobs': jobs, 'internships': internships})
+
+
+@login_required(login_url="/login/")
+def edit_company(request):
+    company = get_object_or_404(Company, user=request.user)
+    if request.method == 'POST':
+        company.company_name = request.POST.get('company_name')
+        company.phone_number = request.POST.get('phone_number')
+        company.email = request.POST.get('email')
+        company.website = request.POST.get('website')
+        company.location = request.POST.get('location')
+        company.save()
+        messages.success(request, "Company profile updated successfully!")
+        return redirect('/company/')
+    return render(request, 'editcompany.html', {'company': company})
 
 
 @login_required(login_url="/login/")

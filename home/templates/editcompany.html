@@ -1,0 +1,32 @@
+<!-- templates/editcompany.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Company Profile</title>
+    <!-- Add your CSS links here -->
+</head>
+<body>
+    <h1>Edit Company Profile</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name" value="{{ company.company_name }}" required><br><br>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" value="{{ company.phone_number }}" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ company.email }}" required><br><br>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" name="website" value="{{ company.website }}" required><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="{{ company.location }}"><br><br>
+
+        <button type="submit">Update Profile</button>
+    </form>
+</body>
+</html>
