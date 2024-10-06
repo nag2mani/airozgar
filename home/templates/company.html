@@ -1,3 +1,4 @@
+<!-- templates/company.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,12 +13,12 @@
     <div class="container mt-5">
         <h1 class="text-center">Company Dashboard</h1>
         <h2>Welcome, {{ request.user.company.company_name }}!</h2>
-        <a href="{% url 'edit_company' %}">Edit Company Profile</a>
+        <a href="{% url 'edit_company' %}" class="btn btn-secondary mt-2">Edit Company Profile</a>
 
         <!-- Buttons to post a job or internship -->
         <div class="d-flex justify-content-center mb-3">
-            <a href="/postjob/" class="btn btn-primary mr-3">Post a Job</a>
-            <a href="/postinternship/" class="btn btn-success">Post an Internship</a>
+            <a href="/postjob/" class="btn btn-secondary mr-3">Post a Job</a>
+            <a href="/postinternship/" class="btn btn-secondary">Post an Internship</a>
         </div>
 
         <!-- Display Posted Jobs -->
@@ -38,6 +39,7 @@
                         <div class="mt-2">
                             <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-warning">Edit</a>
                             <a href="{% url 'delete_job' job.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Applicants</a>
                         </div>
                     </li>
                 </div>
@@ -67,6 +69,7 @@
                             <a href="{% url 'edit_internship' internship.id %}" class="btn btn-sm btn-warning">Edit</a>
                             <a href="{% url 'delete_internship' internship.id %}"
                                 class="btn btn-sm btn-danger">Delete</a>
+                            <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Applicants</a>
                         </div>
                     </li>
                 </div>

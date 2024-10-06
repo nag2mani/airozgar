@@ -28,6 +28,8 @@ urlpatterns = [
     
     path('postjob/', postjob, name='postjob'),
     path('postinternship/', postinternship, name='postinternship'),
+    path('job_applicants/<int:job_id>/', job_applicants, name='job_applicants'),
+    path('internship_applicants/<int:internship_id>/', internship_applicants, name='internship_applicants'),
 
     path('editjob/<int:job_id>/', edit_job, name='edit_job'),
     path('editinternship/<int:internship_id>/', edit_internship, name='edit_internship'),

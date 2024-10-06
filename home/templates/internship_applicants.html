@@ -1,0 +1,41 @@
+<!-- templates/internship_applicants.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Applicants</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Internship Applicants for {{ internship.title }}</h1>
+        <div class="mt-4">
+            <h5>Applicants</h5>
+            <ul class="list-group">
+                {% for applicant in applicants %}
+                <div class="my-3">
+                    <li class="list-group-item">
+                        <h6>{{ applicant.student.user.username }}</h6>
+                        <p><strong>College:</strong> {{ applicant.student.college }}</p>
+                        <p><strong>Branch:</strong> {{ applicant.student.branch }}</p>
+                        <p><strong>GitHub:</strong> <a href="{{ applicant.student.github }}" target="_blank">{{ applicant.student.github }}</a></p>
+                        <p><strong>LinkedIn:</strong> <a href="{{ applicant.student.linkedin }}" target="_blank">{{ applicant.student.linkedin }}</a></p>
+                        <p><strong>Applied Date:</strong> {{ applicant.application_details.applied_date }}</p>
+                    </li>
+                </div>
+                {% empty %}
+                <li class="list-group-item">No applicants yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'company' %}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

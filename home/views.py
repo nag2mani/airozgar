@@ -86,6 +86,18 @@ def apply_job(request, job_id):
         messages.info(request, "You have already applied for this job.")
     return redirect('/job/')
 
+@login_required(login_url="/login/")
+def job_applicants(request, job_id):
+    job = get_object_or_404(Job, id=job_id, company=request.user.company)
+    applicants = []
+    for student_id, application_details in job.student_applied.items():
+        student = get_object_or_404(Student, id=student_id)
+        applicants.append({
+            'student': student,
+            'application_details': application_details
+        })
+    return render(request, 'job_applicants.html', {'job': job, 'applicants': applicants})
+
 
 @login_required(login_url="/login/")
 def apply_internship(request, internship_id):
@@ -98,6 +110,18 @@ def apply_internship(request, internship_id):
     else:
         messages.info(request, "You have already applied for this internship.")
     return redirect('/internship/')
+
+@login_required(login_url="/login/")
+def internship_applicants(request, internship_id):
+    internship = get_object_or_404(Internship, id=internship_id, company=request.user.company)
+    applicants = []
+    for student_id, application_details in internship.student_applied.items():
+        student = get_object_or_404(Student, id=student_id)
+        applicants.append({
+            'student': student,
+            'application_details': application_details
+        })
+    return render(request, 'internship_applicants.html', {'internship': internship, 'applicants': applicants})
 
 
 @login_required(login_url="/login/")

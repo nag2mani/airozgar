@@ -5,40 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <!-- Add your CSS links here -->
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Welcome, {{ request.user.username }}!</h1>
-    <a href="{% url 'edit_student' %}">Edit Student Profile</a>
-    
-    <h2>Applied Jobs</h2>
-    <ul>
-        {% for job in applied_jobs %}
-            <li>
-                <strong>{{ job.title }}</strong> at {{ job.company.company_name }}
-                <p>{{ job.description }}</p>
-                <p>Location: {{ job.location }}</p>
-                <p>Expiry Date: {{ job.expiry_date }}</p>
-                <p>Skills: {{ job.skills }}</p>
-            </li>
-        {% empty %}
-            <li>No jobs applied yet.</li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1 class="mt-4">Welcome, {{ request.user.username }}!</h1>
+        <a href="{% url 'edit_student' %}" class="btn btn-secondary mt-2">Edit Student Profile</a>
+        
+        <h2 class="mt-4">Applied Jobs</h2>
+        <div class="row">
+            {% for job in applied_jobs %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ job.title }} at {{ job.company.company_name }}</h5>
+                            <p class="card-text">{{ job.description }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
+                            <p class="card-text"><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
+                            <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No jobs applied yet.</p>
+            {% endfor %}
+        </div>
 
-    <h2>Applied Internships</h2>
-    <ul>
-        {% for internship in applied_internships %}
-            <li>
-                <strong>{{ internship.title }}</strong> at {{ internship.company.company_name }}
-                <p>{{ internship.description }}</p>
-                <p>Location: {{ internship.location }}</p>
-                <p>Expiry Date: {{ internship.expiry_date }}</p>
-                <p>Skills: {{ internship.skills }}</p>
-            </li>
-        {% empty %}
-            <li>No internships applied yet.</li>
-        {% endfor %}
-    </ul>
+        <h2 class="mt-4">Applied Internships</h2>
+        <div class="row">
+            {% for internship in applied_internships %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ internship.title }} at {{ internship.company.company_name }}</h5>
+                            <p class="card-text">{{ internship.description }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ internship.location }}</p>
+                            <p class="card-text"><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
+                            <p class="card-text"><strong>Skills:</strong> {{ internship.skills }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No internships applied yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
