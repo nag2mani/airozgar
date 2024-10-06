@@ -11,24 +11,20 @@ def home(request):
     return render(request, 'index.html')
 
 
-@login_required(login_url="/login/")
 def job(request):
     jobs = Job.objects.all()
     return render(request, 'job.html', {'jobs': jobs})
 
 
-@login_required(login_url="/login/")
 def internship(request):
     internships = Internship.objects.all()
     return render(request, 'internship.html', {'internships': internships})
 
 
-@login_required(login_url="/login/")
 def contest(request):
     return render(request, 'contest.html')
 
 
-@login_required(login_url="/login/")
 def news(request):
     return render(request, 'news.html')
 
