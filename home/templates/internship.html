@@ -35,13 +35,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Filter Jobs</h5>
 
-                        <!-- Experience Filter -->
-                        <div class="mb-4">
-                            <label class="form-label">Experience (Years)</label>
-                            <input type="range" class="form-range" min="0" max="25" value="0" id="experienceRange">
-                            <p>Selected: <span id="experienceValue">0</span> Years</p>
-                        </div>
-
                         <!-- Salary Filter -->
                         <div class="mb-4">
                             <h5>Salary (Lacs)</h5>
@@ -128,12 +121,4 @@
     </div>
 </div>
 
-<!-- JavaScript for Experience Slider -->
-<script>
-    const experienceSlider = document.getElementById('experienceRange');
-    const experienceValue = document.getElementById('experienceValue');
-    experienceSlider.oninput = function() {
-        experienceValue.textContent = this.value;
-    };
-</script>
 {% endblock %}
