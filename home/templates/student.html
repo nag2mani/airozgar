@@ -1,50 +1,151 @@
 {% extends 'base.html' %}
 {% block start %}
 
-<body>
-    <div class="container">
-        <h1 class="mt-4">Welcome, {{ request.user.username }}!</h1>
-        <a href="{% url 'edit_student' %}" class="btn btn-secondary mt-2">Edit Student Profile</a>
-        
-        <h2 class="mt-4">Applied Jobs</h2>
-        <div class="row">
-            {% for job in applied_jobs %}
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ job.title }} at {{ job.company.company_name }}</h5>
-                            <p class="card-text">{{ job.description }}</p>
-                            <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
-                            <p class="card-text"><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
-                            <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
-                        </div>
-                    </div>
-                </div>
-            {% empty %}
-                <p>No jobs applied yet.</p>
-            {% endfor %}
+<style>
+    #sidebar {
+        width: 250px;
+        min-height: 100vh;
+    }
+
+    #main-content {
+        flex: 1;
+        background-color: #fff;
+    }
+
+    .nav-link {
+        color: #555;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .nav-link:hover {
+        color: #ff6b6b;
+    }
+
+    .card {
+        border-radius: 10px;
+        border: none;
+        background-color: #f4f4f7;
+    }
+
+    .card h5,
+    .card p {
+        margin-bottom: 0;
+    }
+
+    .table {
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table th {
+        background-color: #f4f4f7;
+    }
+
+    .progress-bar {
+        background-color: #ff6b6b;
+    }
+</style>
+
+<div class="d-flex">
+    <div id="sidebar" class="bg-light p-4">
+        <h4 class="mb-4">Welcome, {{ request.user.student.user.username }}!</span></h4>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="/student/" class="nav-link">Dashboard</a></li>
+            <li class="nav-item"><a href="/editstudent/" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="/logout/" class="nav-link material-symbols-sharp">Logout</a></li>
+        </ul>
+    </div>
+    <!-- Main Content -->
+    <div id="main-content" class="container-fluid p-4">
+        <div class="d-flex justify-content-between mb-4">
+            <h2>Student Dashboard</h2>
+            <input type="text" class="form-control w-25" placeholder="Search">
         </div>
 
-        <h2 class="mt-4">Applied Internships</h2>
-        <div class="row">
-            {% for internship in applied_internships %}
-                <div class="col-md-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ internship.title }} at {{ internship.company.company_name }}</h5>
-                            <p class="card-text">{{ internship.description }}</p>
-                            <p class="card-text"><strong>Location:</strong> {{ internship.location }}</p>
-                            <p class="card-text"><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
-                            <p class="card-text"><strong>Skills:</strong> {{ internship.skills }}</p>
-                        </div>
+        <!-- Cards for Total Applications, Job Applications, Internship Applications -->
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h5>Total Job Applications</h5>
+                    <p class="display-6">{{ applied_jobs.count }}</p>
+                    <p>All time</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 80%;"></div>
                     </div>
                 </div>
-            {% empty %}
-                <p>No internships applied yet.</p>
-            {% endfor %}
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h5>Total Internship Applications</h5>
+                    <p class="display-6">{{ applied_internships.count }}</p>
+                    <p>All time</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h5>Total Applications</h5>
+                    <p class="display-6">{{ applied_jobs.count|add:applied_internships.count }}</p>
+                    <p>Current..</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex mt-4">
+            <div class="w-50 pr-3 mx-2">
+                <h5 class="text-center font-weight-bold mt-3">Your Applied Jobs</h5>
+                <ul class="list-group">
+                    {% for job in applied_jobs %}
+                    <div class="my-3">
+                        <li class="list-group-item">
+                            <h6>{{ job.title }}</h6>
+                            <p><strong>Company:</strong> {{ job.company.company_name }}</p>
+                            <p><strong>Category:</strong> {{ job.category }}</p>
+                            <p><strong>Pay Range:</strong> {{ job.pay_range }}</p>
+                            <p><strong>Location:</strong> {{ job.location }}</p>
+                            <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
+                            <div class="mt-2">
+                                <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Details</a>
+                            </div>
+                        </li>
+                    </div>
+                    {% empty %}
+                    <li class="list-group-item">No jobs applied yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="w-50 pl-3">
+                <h5 class="text-center font-weight-bold mt-3">Your Applied Internships</h5>
+                <ul class="list-group">
+                    {% for internship in applied_internships %}
+                    <div class="my-3">
+                        <li class="list-group-item">
+                            <h6>{{ internship.title }}</h6>
+                            <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
+                            <p><strong>Category:</strong> {{ internship.category }}</p>
+                            <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                            <p><strong>Location:</strong> {{ internship.location }}</p>
+                            <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
+                            <div class="mt-2">
+                                <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Details</a>
+                            </div>
+                        </li>
+                    </div>
+                    {% empty %}
+                    <li class="list-group-item">No internships applied yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-
-</body>
+</div>
 
 {% endblock %}

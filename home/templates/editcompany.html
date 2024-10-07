@@ -1,39 +1,55 @@
-<!-- templates/editcompany.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Company Profile</title>
-    <!-- Add your CSS links here -->
-</head>
-<body>
-    <h1>Edit Company Profile</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% if messages %}
-        <div class="alert alert-primary font-weight-bold" role="alert">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
+{% extends 'base.html' %}
+{% block start %}
+
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">Edit Company Profile</h1>
+                        <form method="post">
+                            {% csrf_token %}
+                            {% if messages %}
+                            <div class="alert alert-primary font-weight-bold" role="alert">
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label for="company_name">Company Name:</label>
+                                <input type="text" class="form-control" id="company_name" name="company_name"
+                                    value="{{ company.company_name }}" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="phone_number">Phone Number:</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number"
+                                    value="{{ company.phone_number }}" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="{{ company.email }}" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="website">Website:</label>
+                                <input type="url" class="form-control" id="website" name="website"
+                                    value="{{ company.website }}" required>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="location">Location:</label>
+                                <input type="text" class="form-control" id="location" name="location"
+                                    value="{{ company.location }}">
+                            </div>
+                            <button type="submit" class="btn btn-secondary btn-block mt-3">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endif %}
-        <label for="company_name">Company Name:</label>
-        <input type="text" id="company_name" name="company_name" value="{{ company.company_name }}" required><br><br>
-
-        <label for="phone_number">Phone Number:</label>
-        <input type="text" id="phone_number" name="phone_number" value="{{ company.phone_number }}" required><br><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ company.email }}" required><br><br>
-
-        <label for="website">Website:</label>
-        <input type="url" id="website" name="website" value="{{ company.website }}" required><br><br>
-
-        <label for="location">Location:</label>
-        <input type="text" id="location" name="location" value="{{ company.location }}"><br><br>
-
-        <button type="submit">Update Profile</button>
-    </form>
+    </div>
 </body>
-</html>
+
+
+{% endblock %}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* style.css */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f8fa;
+        }
+
+        #sidebar {
+            width: 250px;
+            min-height: 100vh;
+        }
+
+        #main-content {
+            flex: 1;
+            background-color: #fff;
+        }
+
+        .nav-link {
+            color: #555;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .nav-link:hover {
+            color: #ff6b6b;
+        }
+
+        .card {
+            border-radius: 10px;
+            border: none;
+            background-color: #f4f4f7;
+        }
+
+        .card h5,
+        .card p {
+            margin-bottom: 0;
+        }
+
+        .table {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background-color: #f4f4f7;
+        }
+
+        .progress-bar {
+            background-color: #ff6b6b;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <div id="sidebar" class="bg-light p-4">
+            <h4 class="mb-4">MY - <span class="text-danger">COMPANY</span></h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="#" class="nav-link">Dashboard</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Employees</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Sales & Transactions</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Customers</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Products</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Suppliers</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Inventory</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Logout</a></li>
+            </ul>
+        </div>
+        <!-- Main Content -->
+        <div id="main-content" class="container-fluid p-4">
+            <div class="d-flex justify-content-between mb-4">
+                <h2>Manager Dashboard</h2>
+                <input type="text" class="form-control w-25" placeholder="mm/dd/yyyy">
+            </div>
+
+            <!-- Cards for Total Sales, Customers, Employees -->
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="card p-4 shadow-sm">
+                        <h5>Total Sales</h5>
+                        <p class="display-6">₹ 3205958.00</p>
+                        <p>All time</p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-4 shadow-sm">
+                        <h5>Total Customers</h5>
+                        <p class="display-6">24</p>
+                        <p>All time</p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-4 shadow-sm">
+                        <h5>Total Employees</h5>
+                        <p class="display-6">9</p>
+                        <p>Current..</p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supplier Records Section -->
+            <h4 class="my-4">Supplier Records</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Supplier ID</th>
+                        <th>Supplier Name</th>
+                        <th>Contact Number</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Amul Dairy</td>
+                        <td>9876543210</td>
+                        <td>contact@amuldairy.com</td>
+                        <td>123 Main Street, Mumbai, Maharashtra</td>
+                        <td><a href="#">Update</a></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Mother Dairy</td>
+                        <td>9876543211</td>
+                        <td>contact@motherdairy.com</td>
+                        <td>456 Sarojini Nagar, New Delhi</td>
+                        <td><a href="#">Update</a></td>
+                    </tr>
+                    <!-- Add more records here -->
+                </tbody>
+            </table>
+
+            <!-- Top Employees Section -->
+            <h4 class="my-4">Top Employees</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card p-3 text-center shadow-sm">
+                        <h6>Kartik Kumar</h6>
+                        <p>99% attendance</p>
+                        <p>120% target</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 text-center shadow-sm">
+                        <h6>Rishabh Yadav</h6>
+                        <p>89% attendance</p>
+                        <p>110% target</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card p-3 text-center shadow-sm">
+                        <h6>Nikhil Gupta</h6>
+                        <p>85% attendance</p>
+                        <p>105% target</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

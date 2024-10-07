@@ -1,7 +1,6 @@
 .container{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
 .filter-section {
     width: 20%;
 }
@@ -11,7 +10,6 @@
 .job-card {
     margin-bottom: 20px;
 }
-
 .top-buttons {
     display: flex;
     justify-content: center;

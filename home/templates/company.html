@@ -1,80 +1,161 @@
 {% extends 'base.html' %}
 {% block start %}
 
-<body>
-    <div class="container mt-5">
-        <h1>Company Dashboard</h1>
-        <h2>Welcome, {{ request.user.company.company_name }}!</h2>
-        <a href="{% url 'edit_company' %}" class="btn btn-secondary mt-2">Edit Company Profile</a>
+<style>
+    #sidebar {
+        width: 250px;
+        min-height: 100vh;
+    }
 
-        <!-- Buttons to post a job or internship -->
-        <div class="d-flex justify-content-center mb-3">
-            <a href="/postjob/" class="btn btn-secondary mx-3">Post a Job</a>
-            <a href="/postinternship/" class="btn btn-secondary">Post an Internship</a>
+    #main-content {
+        flex: 1;
+        background-color: #fff;
+    }
+
+    .nav-link {
+        color: #555;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .nav-link:hover {
+        color: #ff6b6b;
+    }
+
+    .card {
+        border-radius: 10px;
+        border: none;
+        background-color: #f4f4f7;
+    }
+
+    .card h5,
+    .card p {
+        margin-bottom: 0;
+    }
+
+    .table {
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .table th {
+        background-color: #f4f4f7;
+    }
+
+    .progress-bar {
+        background-color: #ff6b6b;
+    }
+</style>
+
+<div class="d-flex">
+    <div id="sidebar" class="bg-light p-4">
+        <h4 class="mb-4">Welcome, {{ request.user.company.company_name }}!</span></h4>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="/company/" class="nav-link">Dashboard</a></li>
+            <li class="nav-item"><a href="/postjob/" class="nav-link">Post Job</a></li>
+            <li class="nav-item"><a href="/postinternship/" class="nav-link">Post Internship</a></li>
+            <li class="nav-item"><a href="/editcompany/" class="nav-link">Profile</a></li>
+            <li class="nav-item"><a href="/logout/" class="nav-link material-symbols-sharp">Logout</a></li>
+        </ul>
+    </div>
+    <!-- Main Content -->
+    <div id="main-content" class="container-fluid p-4">
+        <div class="d-flex justify-content-between mb-4">
+            <h2>Company Dashboard</h2>
+            <input type="text" class="form-control w-25" placeholder="Search">
         </div>
 
-        <!-- Display Posted Jobs -->
-        <div class="mt-4">
-            <h5>Your Posted Jobs</h5>
-            <ul class="list-group">
-                {% for job in jobs %}
-                <div class="my-3">
-                    <li class="list-group-item">
-                        <h6>{{ job.title }}</h6>
-                        <p>{{ job.description }}</p>
-                        <p><strong>Field:</strong> {{ job.field }}</p>
-                        <p><strong>Category:</strong> {{ job.category }}</p>
-                        <p><strong>Pay Range:</strong> {{ job.pay_range }}</p>
-                        <p><strong>Location:</strong> {{ job.location }}</p>
-                        <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
-                        <p><strong>Skills:</strong> {{ job.skills }}</p>
-                        <div class="mt-2">
-                            <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{% url 'delete_job' job.id %}" class="btn btn-sm btn-danger">Delete</a>
-                            <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Applicants</a>
-                        </div>
-                    </li>
+        <!-- Cards for Total Sales, Customers, Employees -->
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h5>Total Job Applications</h5>
+                    <p class="display-6">{{ jobs.count }}</p>
+                    <p>All time</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 80%;"></div>
+                    </div>
                 </div>
-                {% empty %}
-                <li class="list-group-item">No jobs posted yet.</li>
-                {% endfor %}
-            </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h5>Total Internship Applications</h5>
+                    <p class="display-6">{{ internships.count }}</p>
+                    <p>All time</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h5>Total Applications</h5>
+                    <p class="display-6">{{ jobs.count|add:internships.count }}</p>
+                    <p>Current..</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Display Posted Internships -->
-        <div class="mt-4">
-            <hr>
-            <h5>Your Posted Internships</h5>
-            <ul class="list-group">
-                {% for internship in internships %}
-                <div class="my-3">
-                    <li class="list-group-item">
-                        <h6>{{ internship.title }}</h6>
-                        <p>{{ internship.description }}</p>
-                        <p><strong>Field:</strong> {{ internship.field }}</p>
-                        <p><strong>Category:</strong> {{ internship.category }}</p>
-                        <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
-                        <p><strong>Location:</strong> {{ internship.location }}</p>
-                        <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
-                        <p><strong>Skills:</strong> {{ internship.skills }}</p>
-                        <div class="mt-2">
-                            <a href="{% url 'edit_internship' internship.id %}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{% url 'delete_internship' internship.id %}"
-                                class="btn btn-sm btn-danger">Delete</a>
-                            <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Applicants</a>
-                        </div>
-                    </li>
-                </div>
-                {% empty %}
-                <li class="list-group-item">No internships posted yet.</li>
-                {% endfor %}
-            </ul>
+        <div class="d-flex mt-4">
+            <div class="w-50 pr-3 mx-2">
+                <h5 class="text-center font-weight-bold mt-3">Your Posted Jobs</h5>
+                <ul class="list-group">
+                    {% for job in jobs %}
+                    <div class="my-3">
+                        <li class="list-group-item">
+                            <h6>{{ job.title }}</h6>
+                            <!-- <p>{{ job.description }}</p> -->
+                            <!-- <p><strong>Field:</strong> {{ job.field }}</p> -->
+                            <p><strong>Category:</strong> {{ job.category }}</p>
+                            <p><strong>Pay Range:</strong> {{ job.pay_range }}</p>
+                            <p><strong>Location:</strong> {{ job.location }}</p>
+                            <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
+                            <!-- <p><strong>Skills:</strong> {{ job.skills }}</p> -->
+                            <div class="mt-2">
+                                <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{% url 'delete_job' job.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Applicants</a>
+                            </div>
+                        </li>
+                    </div>
+                    {% empty %}
+                    <li class="list-group-item">No jobs posted yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="w-50 pl-3">
+                <h5 class="text-center font-weight-bold mt-3">Your Posted Internships</h5>
+                <ul class="list-group">
+                    {% for internship in internships %}
+                    <div class="my-3">
+                        <li class="list-group-item">
+                            <h6>{{ internship.title }}</h6>
+                            <!-- <p>{{ internship.description }}</p> -->
+                            <!-- <p><strong>Field:</strong> {{ internship.field }}</p> -->
+                            <p><strong>Category:</strong> {{ internship.category }}</p>
+                            <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                            <p><strong>Location:</strong> {{ internship.location }}</p>
+                            <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
+                            <!-- <p><strong>Skills:</strong> {{ internship.skills }}</p> -->
+                            <div class="mt-2">
+                                <a href="{% url 'edit_internship' internship.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{% url 'delete_internship' internship.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Applicants</a>
+                            </div>
+                        </li>
+                    </div>
+                    {% empty %}
+                    <li class="list-group-item">No internships posted yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+</div>
 
 {% endblock %}

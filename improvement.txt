@@ -1,0 +1,135 @@
+Your Django job portal project is well-structured and covers a lot of ground. However, there are a few areas where improvements and optimizations can be made. Below are some suggestions and corrections:
+
+### 1. **Model Improvements**
+
+#### **Company Model**
+- **Default Values for Email and Website**: The default values for `email` and `website` are set using f-strings, which won't work as expected because `company_name` is not available at the time of model creation. Instead, you can set default values in the `save` method or use a custom method to generate these values.
+
+```python
+class Company(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=15)
+    email = models.EmailField(max_length=255, blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.company_name
+
+    def save(self, *args, **kwargs):
+        if not self.email:
+            self.email = f"{self.company_name.replace(' ', '').lower()}@gmail.com"
+        if not self.website:
+            self.website = f"{self.company_name.replace(' ', '').lower()}.com"
+        super().save(*args, **kwargs)
+```
+
+#### **Job and Internship Models**
+- **JSONField for `student_applied`**: Using `JSONField` to store application details is not ideal for querying and indexing. Consider using a separate model to manage job applications.
+
+```python
+class JobApplication(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    applied_date = models.DateField(auto_now_add=True)
+
+class InternshipApplication(models.Model):
+    internship = models.ForeignKey(Internship, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    applied_date = models.DateField(auto_now_add=True)
+```
+
+### 2. **Views Improvements**
+
+#### **Apply Job and Internship**
+- **Using Separate Models for Applications**: Update the `apply_job` and `apply_internship` views to use the new `JobApplication` and `InternshipApplication` models.
+
+```python
+@login_required(login_url="/login/")
+def apply_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    student = request.user.student
+    if not JobApplication.objects.filter(job=job, student=student).exists():
+        JobApplication.objects.create(job=job, student=student)
+        messages.success(request, "Applied for the job successfully!")
+    else:
+        messages.info(request, "You have already applied for this job.")
+    return redirect('/job/')
+
+@login_required(login_url="/login/")
+def apply_internship(request, internship_id):
+    internship = get_object_or_404(Internship, id=internship_id)
+    student = request.user.student
+    if not InternshipApplication.objects.filter(internship=internship, student=student).exists():
+        InternshipApplication.objects.create(internship=internship, student=student)
+        messages.success(request, "Applied for the internship successfully!")
+    else:
+        messages.info(request, "You have already applied for this internship.")
+    return redirect('/internship/')
+```
+
+#### **Job and Internship Applicants**
+- **Fetching Applicants**: Update the `job_applicants` and `internship_applicants` views to fetch applicants from the new models.
+
+```python
+@login_required(login_url="/login/")
+def job_applicants(request, job_id):
+    job = get_object_or_404(Job, id=job_id, company=request.user.company)
+    applicants = JobApplication.objects.filter(job=job).select_related('student')
+    return render(request, 'job_applicants.html', {'job': job, 'applicants': applicants})
+
+@login_required(login_url="/login/")
+def internship_applicants(request, internship_id):
+    internship = get_object_or_404(Internship, id=internship_id, company=request.user.company)
+    applicants = InternshipApplication.objects.filter(internship=internship).select_related('student')
+    return render(request, 'internship_applicants.html', {'internship': internship, 'applicants': applicants})
+```
+
+### 3. **Template Improvements**
+
+#### **Job and Internship Applicants Templates**
+- **Displaying Applicants**: Update the templates to display applicants correctly.
+
+```html
+<!-- job_applicants.html -->
+<h2>Applicants for {{ job.title }}</h2>
+<ul>
+    {% for applicant in applicants %}
+        <li>{{ applicant.student.user.username }} - Applied on: {{ applicant.applied_date }}</li>
+    {% endfor %}
+</ul>
+
+<!-- internship_applicants.html -->
+<h2>Applicants for {{ internship.title }}</h2>
+<ul>
+    {% for applicant in applicants %}
+        <li>{{ applicant.student.user.username }} - Applied on: {{ applicant.applied_date }}</li>
+    {% endfor %}
+</ul>
+```
+
+### 4. **URLs**
+
+- **Ensure URLs are consistent**: Make sure all URLs are consistent and follow a pattern.
+
+### 5. **Security**
+
+- **Password Hashing**: Ensure that passwords are hashed properly. Django's `User.objects.create_user` method already handles this, so you're good there.
+
+### 6. **Testing**
+
+- **Unit Tests**: Write unit tests for your views and models to ensure they work as expected.
+
+### 7. **Deployment**
+
+- **Environment Variables**: Use environment variables for sensitive information like database credentials.
+- **Static and Media Files**: Configure static and media file handling in production.
+
+### 8. **Documentation**
+
+- **Comments and Docstrings**: Add comments and docstrings to your models, views, and other functions to make the code more understandable.
+
+### Conclusion
+
+Your project is on the right track, and with these improvements, it will be more scalable, maintainable, and secure. The key changes involve moving away from using `JSONField` for storing application details and instead using separate models for job and internship applications. This will make querying and managing data more efficient.
