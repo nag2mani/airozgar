@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block start %}
 
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="container-xxl hero-header">
     <div class="container px-lg-5">
         <div class="row g-5 py-5">
@@ -33,17 +36,17 @@
             <div class="col-md-3 filter-section">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Filter Jobs</h5>
+                        <h5 class="card-title">Filter Internships</h5>
 
                         <!-- Salary Filter -->
                         <div class="mb-4">
-                            <h5>Salary (Lacs)</h5>
+                            <h5>Stipend (Lacs)</h5>
                             <div>
-                                <input type="checkbox" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
-                                <input type="checkbox" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
-                                <input type="checkbox" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
-                                <input type="checkbox" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
-                                <input type="checkbox" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
+                                <input type="checkbox" class="stipend-filter" id="stipend1" name="stipend" value="0-5"> 0-5 Lacs<br>
+                                <input type="checkbox" class="stipend-filter" id="stipend2" name="stipend" value="5-10"> 5-10 Lacs<br>
+                                <input type="checkbox" class="stipend-filter" id="stipend3" name="stipend" value="10-15"> 10-15 Lacs<br>
+                                <input type="checkbox" class="stipend-filter" id="stipend4" name="stipend" value="15-20"> 15-20 Lacs<br>
+                                <input type="checkbox" class="stipend-filter" id="stipend5" name="stipend" value="20-25"> 20-25 Lacs<br>
                             </div>
                         </div>
 
@@ -52,9 +55,9 @@
                             <label for="category" class="form-label">Category</label>
                             <select id="category" class="form-select">
                                 <option selected>Choose...</option>
-                                <option value="1">AI</option>
-                                <option value="2">ML</option>
-                                <option value="3">Data Science</option>
+                                <option value="AI">AI</option>
+                                <option value="ML">ML</option>
+                                <option value="Data Science">Data Science</option>
                                 <!-- Add more categories as needed -->
                             </select>
                         </div>
@@ -64,9 +67,9 @@
                             <label for="subcategory" class="form-label">Subcategory</label>
                             <select id="subcategory" class="form-select">
                                 <option selected>Choose...</option>
-                                <option value="1">Deep Learning</option>
-                                <option value="2">Natural Language Processing</option>
-                                <option value="3">Computer Vision</option>
+                                <option value="Deep Learning">Deep Learning</option>
+                                <option value="Natural Language Processing">Natural Language Processing</option>
+                                <option value="Computer Vision">Computer Vision</option>
                                 <!-- Add more subcategories as needed -->
                             </select>
                         </div>
@@ -82,14 +85,14 @@
                             <label for="job-type" class="form-label">Job Type</label>
                             <select id="job-type" class="form-select">
                                 <option selected>Choose...</option>
-                                <option value="1">Remote</option>
-                                <option value="2">Onsite</option>
-                                <option value="3">Hybrid</option>
+                                <option value="Remote">Remote</option>
+                                <option value="Onsite">Onsite</option>
+                                <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
 
                         <!-- Apply Filter Button -->
-                        <button class="btn btn-secondary w-100">Apply Filters</button>
+                        <button id="apply-filters" class="btn btn-secondary w-100">Apply Filters</button>
                     </div>
                 </div>
             </div>
@@ -97,9 +100,9 @@
             <!-- Internship Cards Section (80% width) -->
             <div class="col-md-9 internship-cards-section">
                 <h1 class="text-center">Available Internships</h1>
-                <ul class="list-group">
+                <ul class="list-group" id="internship-list">
                     {% for internship in internships %}
-                    <div class="my-3">
+                    <div class="my-3 internship-item" data-stipend="{{ internship.stipend }}" data-category="{{ internship.category }}" data-location="{{ internship.location }}">
                         <li class="list-group-item">
                             <h6>{{ internship.title }}</h6>
                             <p>{{ internship.description }}</p>
@@ -109,7 +112,7 @@
                             <p><strong>Location:</strong> {{ internship.location }}</p>
                             <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
                             <p><strong>Skills:</strong> {{ internship.skills }}</p>
-                            <a href="{% url 'apply_internship' internship.id %}">Apply</a>
+                            <a href="{% url 'apply_internship' internship.id %}" class="btn btn-secondary">Apply</a>
                         </li>
                     </div>
                     {% empty %}
@@ -120,5 +123,55 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#apply-filters').click(function() {
+        var selectedStipends = [];
+        $('.stipend-filter:checked').each(function() {
+            selectedStipends.push($(this).val());
+        });
+
+        var selectedCategory = $('#category').val();
+        var selectedSubcategory = $('#subcategory').val();
+        var selectedJobType = $('#job-type').val();
+        var selectedLocation = $('#location').val().toLowerCase();
+
+        $('.internship-item').each(function() {
+            var stipend = $(this).data('stipend');
+            var category = $(this).data('category');
+            var location = $(this).data('location').toLowerCase();
+
+            var showInternship = true;
+
+            if (selectedStipends.length > 0 && !selectedStipends.includes(stipend)) {
+                showInternship = false;
+            }
+
+            if (selectedCategory && selectedCategory !== category) {
+                showInternship = false;
+            }
+
+            if (selectedSubcategory && selectedSubcategory !== 'Choose...' && selectedSubcategory !== 'Deep Learning') {
+                showInternship = false;
+            }
+
+            if (selectedJobType && selectedJobType !== 'Choose...' && selectedJobType !== 'Hybrid') {
+                showInternship = false;
+            }
+
+            if (selectedLocation && !location.includes(selectedLocation)) {
+                showInternship = false;
+            }
+
+            if (showInternship) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}

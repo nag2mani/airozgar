@@ -1,10 +1,11 @@
+<!-- job.html -->
 {% extends 'base.html' %}
 {% block start %}
 
 <!-- Hero Section -->
 <div class="container-xxl hero-header">
-    <div class="container px-lg-5">
-        <div class="row g-5 py-5">
+    <div class="container py-3">
+        <div class="row g-5">
             <div class="col-12 text-center">
                 <h1>AI, ML, and Data Science Jobs For Freshers</h1>
             </div>
@@ -17,7 +18,7 @@
     <div class="container">
         <!-- Buttons for Job of the Day and Job of the Week -->
         <div class="row">
-            <div class="col-md-12 top-buttons text-center mb-3">
+            <div class="col-md-12 top-buttons text-center">
                 <button class="btn btn-secondary mx-2">Job of the Day</button>
                 <button class="btn btn-secondary mx-2">Job of the Week</button>
             </div>
@@ -32,19 +33,20 @@
         <div class="row">
             <!-- Filter Section (25% width) -->
             <div class="col-md-3 filter-section">
+                <h5 class="card-title">Filter Jobs</h5>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Filter Jobs</h5>
 
                         <!-- Salary Filter -->
                         <div class="mb-4">
                             <h5>Salary (Lacs)</h5>
                             <div>
-                                <input type="checkbox" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
-                                <input type="checkbox" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
-                                <input type="checkbox" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
-                                <input type="checkbox" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
-                                <input type="checkbox" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary6" name="salary" value="25+"> 25 + Lacs<br>
                             </div>
                         </div>
 
@@ -53,22 +55,21 @@
                             <label for="category" class="form-label">Category</label>
                             <select id="category" class="form-select">
                                 <option selected>Choose...</option>
-                                <option value="1">AI</option>
-                                <option value="2">ML</option>
-                                <option value="3">Data Science</option>
+                                <option value="AI">AI</option>
+                                <option value="ML">ML</option>
+                                <option value="Data Science">Data Science</option>
                                 <!-- Add more categories as needed -->
                             </select>
                         </div>
 
-                        <!-- Subcategory Filter -->
+                        <!-- Job Type Filter -->
                         <div class="mb-4">
-                            <label for="subcategory" class="form-label">Subcategory</label>
-                            <select id="subcategory" class="form-select">
+                            <label for="job-type" class="form-label">Job Type</label>
+                            <select id="job-type" class="form-select">
                                 <option selected>Choose...</option>
-                                <option value="1">Deep Learning</option>
-                                <option value="2">Natural Language Processing</option>
-                                <option value="3">Computer Vision</option>
-                                <!-- Add more subcategories as needed -->
+                                <option value="Remote">Remote</option>
+                                <option value="Onsite">Onsite</option>
+                                <option value="Hybrid">Hybrid</option>
                             </select>
                         </div>
 
@@ -78,19 +79,8 @@
                             <input type="text" id="location" class="form-control" placeholder="Enter location">
                         </div>
 
-                        <!-- Job Type Filter -->
-                        <div class="mb-4">
-                            <label for="job-type" class="form-label">Job Type</label>
-                            <select id="job-type" class="form-select">
-                                <option selected>Choose...</option>
-                                <option value="1">Remote</option>
-                                <option value="2">Onsite</option>
-                                <option value="3">Hybrid</option>
-                            </select>
-                        </div>
-
                         <!-- Apply Filter Button -->
-                        <button class="btn btn-secondary w-100">Apply Filters</button>
+                        <button id="apply-filters" class="btn btn-secondary w-100">Apply Filters</button>
                     </div>
                 </div>
             </div>
@@ -98,10 +88,10 @@
             <!-- Job Cards Section (75% width) -->
             <div class="col-md-9 job-cards-section">
                 <h2 class="text-center">Available Jobs</h2>
-                <div class="row">
+                <div class="row" id="job-list">
                     <!-- Loop through the jobs -->
                     {% for job in jobs %}
-                    <div class="col-md-12 mb-4">
+                    <div class="col-md-12 mb-4 job-item" data-salary="{{ job.pay_range }}" data-category="{{ job.category }}" data-location="{{ job.location }}">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{ job.title }}</h5>
@@ -112,7 +102,7 @@
                                 <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
                                 <p class="card-text"><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
                                 <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
-                                <a href="{% url 'apply_job' job.id %}">Apply</a>
+                                <a href="{% url 'apply_job' job.id %}" class="btn btn-secondary">Apply</a>
                             </div>
                         </div>
                     </div>
@@ -126,5 +116,50 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#apply-filters').click(function() {
+        var selectedSalaries = [];
+        $('.salary-filter:checked').each(function() {
+            selectedSalaries.push($(this).val());
+        });
+
+        var selectedCategory = $('#category').val();
+        var selectedJobType = $('#job-type').val();
+        var selectedLocation = $('#location').val().toLowerCase();
+
+        $('.job-item').each(function() {
+            var salary = $(this).data('salary');
+            var category = $(this).data('category');
+            var location = $(this).data('location').toLowerCase();
+
+            var showJob = true;
+
+            if (selectedSalaries.length > 0 && !selectedSalaries.includes(salary)) {
+                showJob = false;
+            }
+
+            if (selectedCategory && selectedCategory !== category) {
+                showJob = false;
+            }
+
+            if (selectedJobType && selectedJobType !== 'Choose...' && selectedJobType !== 'Hybrid') {
+                showJob = false;
+            }
+
+            if (selectedLocation && !location.includes(selectedLocation)) {
+                showJob = false;
+            }
+
+            if (showJob) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}

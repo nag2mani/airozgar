@@ -108,11 +108,11 @@
                             <h6>{{ job.title }}</h6>
                             <p><strong>Company:</strong> {{ job.company.company_name }}</p>
                             <p><strong>Category:</strong> {{ job.category }}</p>
-                            <p><strong>Pay Range:</strong> {{ job.pay_range }}</p>
+                            <p><strong>Pay Range:</strong> {{ job.pay_range }} (Lac)</p>
                             <p><strong>Location:</strong> {{ job.location }}</p>
                             <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
                             <div class="mt-2">
-                                <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Details</a>
+                                <a href="#" class="btn btn-sm btn-info">View Details</a>
                             </div>
                         </li>
                     </div>
@@ -131,11 +131,11 @@
                             <h6>{{ internship.title }}</h6>
                             <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
                             <p><strong>Category:</strong> {{ internship.category }}</p>
-                            <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                            <p><strong>Stipend:</strong> {{ internship.stipend }} (Lac)</p>
                             <p><strong>Location:</strong> {{ internship.location }}</p>
                             <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
                             <div class="mt-2">
-                                <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Details</a>
+                                <a href="#" class="btn btn-sm btn-info">View Details</a>
                             </div>
                         </li>
                     </div>
