@@ -34,19 +34,20 @@
         <div class="row">
             <!-- Filter Section (25% width) -->
             <div class="col-md-3 filter-section">
+                <h5 class="card-title">Filter Jobs</h5>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Filter Internships</h5>
 
                         <!-- Salary Filter -->
                         <div class="mb-4">
-                            <h5>Stipend (Lacs)</h5>
+                            <h5>Salary (Lacs)</h5>
                             <div>
-                                <input type="checkbox" class="stipend-filter" id="stipend1" name="stipend" value="0-5"> 0-5 Lacs<br>
-                                <input type="checkbox" class="stipend-filter" id="stipend2" name="stipend" value="5-10"> 5-10 Lacs<br>
-                                <input type="checkbox" class="stipend-filter" id="stipend3" name="stipend" value="10-15"> 10-15 Lacs<br>
-                                <input type="checkbox" class="stipend-filter" id="stipend4" name="stipend" value="15-20"> 15-20 Lacs<br>
-                                <input type="checkbox" class="stipend-filter" id="stipend5" name="stipend" value="20-25"> 20-25 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary6" name="salary" value="25+"> 25 + Lacs<br>
                             </div>
                         </div>
 
@@ -62,24 +63,6 @@
                             </select>
                         </div>
 
-                        <!-- Subcategory Filter -->
-                        <div class="mb-4">
-                            <label for="subcategory" class="form-label">Subcategory</label>
-                            <select id="subcategory" class="form-select">
-                                <option selected>Choose...</option>
-                                <option value="Deep Learning">Deep Learning</option>
-                                <option value="Natural Language Processing">Natural Language Processing</option>
-                                <option value="Computer Vision">Computer Vision</option>
-                                <!-- Add more subcategories as needed -->
-                            </select>
-                        </div>
-
-                        <!-- Location Filter -->
-                        <div class="mb-4">
-                            <label for="location" class="form-label">Location</label>
-                            <input type="text" id="location" class="form-control" placeholder="Enter location">
-                        </div>
-
                         <!-- Job Type Filter -->
                         <div class="mb-4">
                             <label for="job-type" class="form-label">Job Type</label>
@@ -89,6 +72,12 @@
                                 <option value="Onsite">Onsite</option>
                                 <option value="Hybrid">Hybrid</option>
                             </select>
+                        </div>
+
+                        <!-- Location Filter -->
+                        <div class="mb-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" id="location" class="form-control" placeholder="Enter location">
                         </div>
 
                         <!-- Apply Filter Button -->
