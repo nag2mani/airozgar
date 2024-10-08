@@ -1,37 +1,47 @@
-<!-- templates/editstudent.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Student Profile</title>
-    <!-- Add your CSS links here -->
-</head>
+{% extends 'base.html' %}
+{% block start %}
 <body>
-    <h1>Edit Student Profile</h1>
-    <form method="post">
-        {% csrf_token %}
-    
-        {% if messages %}
-        <div class="alert alert-primary font-weight-bold" role="alert">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mt-5">Edit Student Profile</h1>
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                    <div class="alert alert-primary font-weight-bold" role="alert">
+                        {% for message in messages %}
+                        {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="college">College:</label>
+                        <input type="text" class="form-control" id="college" name="college" value="{{ student.college }}" required>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="branch">Branch:</label>
+                        <input type="text" class="form-control" id="branch" name="branch" value="{{ student.branch }}" required>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="github">GitHub:</label>
+                        <input type="url" class="form-control" id="github" name="github" value="{{ student.github }}">
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="linkedin">LinkedIn:</label>
+                        <input type="url" class="form-control" id="linkedin" name="linkedin" value="{{ student.linkedin }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary btn-block mt-3">Update Profile</button>
+                </form>
+            </div>
         </div>
-        {% endif %}
-        <label for="college">College:</label>
-        <input type="text" id="college" name="college" value="{{ student.college }}" required><br><br>
-
-        <label for="branch">Branch:</label>
-        <input type="text" id="branch" name="branch" value="{{ student.branch }}" required><br><br>
-
-        <label for="github">GitHub:</label>
-        <input type="url" id="github" name="github" value="{{ student.github }}"><br><br>
-
-        <label for="linkedin">LinkedIn:</label>
-        <input type="url" id="linkedin" name="linkedin" value="{{ student.linkedin }}"><br><br>
-
-        <button type="submit">Update Profile</button>
-    </form>
+    </div>
 </body>
-</html>
+
+
+{% endblock %}
