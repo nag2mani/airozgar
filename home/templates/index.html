@@ -3,25 +3,54 @@
 
 <!-- CSS for horizontal scrolling and animation -->
 <style>
-    .testimonial-carousel {
-        overflow: hidden;
-        position: relative;
+    .container {
+        user-select: none;
+        font-family: 'Poppins', 'Roboto', sans-serif;
+    }
+    .customers{
+        font-family: 'Poppins', 'Roboto', sans-serif;
+    }
+    .our-services {
+        height: 100px;
     }
 
     .testimonial-track {
         display: flex;
-        width: 100%;
-        animation: scrollLeft 30s linear infinite;
+        animation: scroll 20s linear infinite;
+    }
+
+    /* Pause animation on hover */
+    .testimonial-track:hover {
+        animation-play-state: paused;
+    }
+
+    .testimonial-carousel {
+        overflow: hidden;
+        position: relative;
     }
 
     .testimonial-item {
         flex: 0 0 25%; /* Adjust this based on the number of cards to fit in one row */
         box-sizing: border-box;
     }
+    .custom-img{
+        border-radius: 30px;
+    }
+    .custom-btn {
+    background-color: black;
+    color: white;
+    transition: background-color 0.3s ease;
+    }
 
-    @keyframes scrollLeft {
+    .custom-btn:hover {
+        background-color: grey;
+        color: white;
+    }
+
+
+    @keyframes scroll {
         0% {
-            transform: translateX(100%);
+            transform: translateX(0);
         }
         100% {
             transform: translateX(-100%);
@@ -33,10 +62,8 @@
     <div class="container">
         <div class="row">
             <div class="col d-flex flex-column justify-content-center align-items-center py-4">
-                <h1 class="text-center">Our Platform is dedicated to Freshers For Jobs & Internships in the field of AI
-                    & ML</h1>
-                <p class="text-center">Discover everything you need in one place! Explore innovation, find exciting
-                    career paths, and stay updated with the latest tech trends—all on our user-friendly website.</p>
+                <h1 class="text-center">Kickstart Your AI & ML Career Journey Today!</h1>
+                <p class="text-center">Discover internships, job opportunities, and the latest innovations in AI & ML, all in one place. Explore your future, gain insights, and stay ahead of the curve with our dynamic, fresher-focused platform.</p>
             </div>
             <div class="col">
                 <img class="img-fluid" src="../static/img/about.png" alt="">
@@ -48,48 +75,48 @@
 
 <div class="container">
     <div class="container py-3">
-        <div class="section-title position-relative text-center" data-wow-delay="0.1s">
-            <h6 class="position-relative d-inline">Our Services</h6>
-            <h4 class="my-2">Experience excellence through our comprehensive range of services</h4>
+        <div class="section-title position-relative text-center our-services" data-wow-delay="0.1s">
+            <h3 class="position-relative d-inline">What We Offer</h3>
+            <h4 class="my-2">Empowering Freshers with AI & ML Career Opportunities</h4>
         </div>
         <div class="row g-4">
             <div class="col-lg-4 col-md-6 wow zoomIn">
                 <div class="service-item d-flex flex-column justify-content-center text-center rounded">
                     <div class="container">
-                        <img class="img-fluid wow zoomIn" data-wow-delay="0.5s" src="../static/img/job.jpg">
+                        <img class="img-fluid custom-img wow zoomIn" data-wow-delay="0.5s" src="../static/img/job.jpg">
                     </div>
                     <h5 class="my-2">Jobs & Internships</h5>
                     <p>
                         Discover opportunities by exploring our platform for finding the latest Jobs & Internships for
                         Freshers In hot domain like AI, ML, DS. Your are just a click away!
                     </p>
-                    <a class="btn px-3 mt-auto mx-auto" href="/contest/">Read More</a>
+                    <a class="btn px-3 mt-auto mx-auto custom-btn" href="/contest/">Read More</a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 wow zoomIn">
                 <div class="service-item d-flex flex-column justify-content-center text-center rounded">
                     <div class="container">
-                        <img class="img-fluid wow zoomIn" data-wow-delay="0.5s" src="../static/img/contest.jpg">
+                        <img class="img-fluid custom-img wow zoomIn" data-wow-delay="0.5s" src="../static/img/contest.jpg">
                     </div>
                     <h5 class="my-2">Contests & Hackathons</h5>
                     <p>
                         Explore a world of opportunities by discovering the latest Contests and Hackathons.
                         Unleash your creativity, compete with the best, and turn your ideas into reality.
                     </p>
-                    <a class="btn px-3 mt-auto mx-auto" href="/contest/">Read More</a>
+                    <a class="btn px-3 mt-auto mx-auto custom-btn" href="/contest/">Read More</a>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 wow zoomIn">
                 <div class="service-item d-flex flex-column justify-content-center text-center rounded">
                     <div class="container">
-                        <img class="img-fluid wow zoomIn" data-wow-delay="0.5s" src="../static/img/news.jpg">
+                        <img class="img-fluid custom-img wow zoomIn" data-wow-delay="0.5s" src="../static/img/news.jpg">
                     </div>
                     <h5 class="my-2">Breaking News</h5>
                     <p>
-                        Dive into the pulse of the moment by exploring our platform for finding Breaking News.
+                        Dive into the pulse of the moment with tech News.
                         From industry updates to tech trends, we deliver the latest information at your fingertips.
                     </p>
-                    <a class="btn px-3 mt-auto mx-auto" href="/contest/">Read More</a>
+                    <a class="btn px-3 mt-auto mx-auto custom-btn" href="/news/">Read More</a>
                 </div>
             </div>
         </div>
@@ -97,7 +124,7 @@
 </div>
 
 
-<div class="bg-secondary">
+<div class="bg-secondary customers">
     <div class="testimonial py-4">
         <h6 class="text-center">Our Customers</h6>
         <h4 class="text-center">Explore the success stories of our valued Customers</h4>
