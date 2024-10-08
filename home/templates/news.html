@@ -2,39 +2,90 @@
 {% block start %}
 
 <style>
+  /* Shared Card Styling for both pages */
   .news-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    border: none;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 30px;
     padding: 15px;
   }
 
+  .news-card:hover {
+    transform: scale(1.02);
+  }
+
+  .image-container {
+    padding: 15px; /* Equal padding for all sides */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .news-card img {
-    max-width: 100%;
-    height: auto;
+    border-radius: 10px;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .news-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .news-card h4 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .news-card p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .description {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #666;
   }
 
   .news-info {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-  }
-
-  .news-info span {
     font-size: 0.9rem;
-    color: #888;
-  }
-
-  .news-tags {
     margin-top: 15px;
   }
 
+  .news-info span {
+    color: #888;
+    font-size: 0.95rem;
+  }
+
+  .news-tags {
+    margin-top: 20px;
+  }
+
   .news-tags span {
-    background-color: #f0f0f0;
-    padding: 5px 10px;
-    margin-right: 5px;
-    border-radius: 3px;
-    font-size: 0.8rem;
+    background-color: #e1eaff;
+    padding: 7px 12px;
+    margin-right: 8px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #0056b3;
+    font-weight: 500;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .news-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>
 
@@ -46,14 +97,13 @@
     <!-- News Card 1 -->
     <div class="news-card">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 image-container">
           <img src="../static/img/image.png" alt="News Image">
         </div>
         <div class="col-md-9">
           <h4>New AI Model Achieves Breakthrough in Natural Language Processing</h4>
           <p><strong>Published:</strong> October 2, 2024</p>
-          <p>Researchers have developed a new AI model that outperforms existing models in tasks related to natural
-            language understanding...</p>
+          <p>Researchers have developed a new AI model that outperforms existing models in tasks related to natural language understanding...</p>
           <div class="news-info">
             <span><i class="fas fa-calendar-alt"></i> October 2, 2024</span>
           </div>
@@ -68,14 +118,13 @@
     <!-- News Card 2 -->
     <div class="news-card">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 image-container">
           <img src="../static/img/image.png" alt="News Image">
         </div>
         <div class="col-md-9">
           <h4>Machine Learning Model Predicts Stock Market Trends with High Accuracy</h4>
           <p><strong>Published:</strong> October 1, 2024</p>
-          <p>A new machine learning algorithm has been developed to predict stock market trends, achieving unprecedented
-            accuracy in its predictions...</p>
+          <p>A new machine learning algorithm has been developed to predict stock market trends, achieving unprecedented accuracy in its predictions...</p>
           <div class="news-info">
             <span><i class="fas fa-calendar-alt"></i> October 1, 2024</span>
           </div>
@@ -90,14 +139,13 @@
     <!-- News Card 3 -->
     <div class="news-card">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 image-container">
           <img src="https://via.placeholder.com/150" alt="News Image">
         </div>
         <div class="col-md-9">
           <h4>Data Science Revolutionizing Healthcare Analytics</h4>
           <p><strong>Published:</strong> September 28, 2024</p>
-          <p>Data science techniques are increasingly being used to improve healthcare systems by predicting disease
-            outbreaks and optimizing treatment plans...</p>
+          <p>Data science techniques are increasingly being used to improve healthcare systems by predicting disease outbreaks and optimizing treatment plans...</p>
           <div class="news-info">
             <span><i class="fas fa-calendar-alt"></i> September 28, 2024</span>
           </div>

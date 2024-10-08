@@ -72,30 +72,30 @@
                 <div class="card p-4 shadow-sm">
                     <h5>Total Job Applications</h5>
                     <p class="display-6">{{ applied_jobs.count }}</p>
-                    <p>All time</p>
+                    <!-- <p>All time</p>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 80%;"></div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm">
                     <h5>Total Internship Applications</h5>
                     <p class="display-6">{{ applied_internships.count }}</p>
-                    <p>All time</p>
+                    <!-- <p>All time</p>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 40%;"></div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card p-4 shadow-sm">
                     <h5>Total Applications</h5>
                     <p class="display-6">{{ applied_jobs.count|add:applied_internships.count }}</p>
-                    <p>Current..</p>
+                    <!-- <p>Current..</p>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 85%;"></div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -114,7 +114,7 @@
                             <p><strong>Location:</strong> {{ job.location }}</p>
                             <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
                             <div class="mt-2">
-                                <a href="#" class="btn btn-sm btn-info">View Details</a>
+                                <a href="#" class="btn btn-sm btn-warning">Under Review</a>
                             </div>
                         </li>
                     </div>
@@ -137,7 +137,7 @@
                             <p><strong>Location:</strong> {{ internship.location }}</p>
                             <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
                             <div class="mt-2">
-                                <a href="#" class="btn btn-sm btn-info">View Details</a>
+                                <a href="#" class="btn btn-sm btn-warning">Under Review</a>
                             </div>
                         </li>
                     </div>
