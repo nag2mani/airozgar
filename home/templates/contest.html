@@ -2,65 +2,185 @@
 {% block start %}
 
 <style>
+  /* Overall Page Styling */
+  body {
+    background-color: #f9f9f9;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h2 {
+    color: #333;
+    font-weight: bold;
+  }
+
+  .intro-text {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 1.2rem;
+    color: #555;
+  }
+
+  /* Hackathon Card Styling */
   .hackathon-card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    border: none;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 30px;
     padding: 15px;
   }
 
+  .hackathon-card:hover {
+    transform: scale(1.02);
+  }
+
+  .image-container {
+    padding: 15px; /* Equal padding for all sides */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .hackathon-card img {
-    max-width: 100%;
-    height: auto;
+    border-radius: 10px;
+    width: 100%;
+    height: 180px; /* Reduced height */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .hackathon-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .hackathon-card h4 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .hackathon-card p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .description {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #666;
   }
 
   .hackathon-info {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
-  }
-
-  .hackathon-info span {
     font-size: 0.9rem;
-    color: #888;
-  }
-
-  .hackathon-tags {
     margin-top: 15px;
   }
 
+  .hackathon-info span {
+    color: #888;
+    font-size: 0.95rem;
+  }
+
+  .hackathon-tags {
+    margin-top: 20px;
+  }
+
   .hackathon-tags span {
-    background-color: #f0f0f0;
-    padding: 5px 10px;
-    margin-right: 5px;
-    border-radius: 3px;
-    font-size: 0.8rem;
+    background-color: #e1eaff;
+    padding: 7px 12px;
+    margin-right: 8px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: #0056b3;
+    font-weight: 500;
+  }
+
+  /* Buttons */
+  .register-btn {
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    align-self: center;
+  }
+
+  .register-btn:hover {
+    background-color: #218838;
+  }
+
+  /* Flex layout for card content */
+  .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-info {
+    flex: 1;
+    margin-right: 20px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .hackathon-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .card-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .register-btn {
+      margin-top: 15px;
+      width: 100%;
+    }
   }
 </style>
 
 <body>
 
   <div class="container mt-5">
-    <h2 style="text-align: center; margin-bottom: 25px;">Hackathons</h2>
+    <h2 style="text-align: center;">Upcoming Hackathons for College Students</h2>
+    <p class="intro-text">Participate in exciting hackathons, win amazing prizes, and challenge yourself! Explore opportunities below and start coding your way to success!</p>
 
     <!-- Hackathon Card 1 -->
     <div class="hackathon-card">
       <div class="row">
-        <div class="col-md-3">
-          <img src="../static/img/image.png" alt="News Image">
+        <div class="col-md-3 image-container">
+          <img src="../static/img/image.png" alt="Hackathon Image">
         </div>
-        <div class="col-md-9">
-          <h4>VCT Hackathon: Esports Manager Challenge</h4>
-          <p><strong>$61,000</strong> in prizes - 2621 participants</p>
-          <div class="hackathon-info">
-            <span><i class="fas fa-calendar-alt"></i> Sep 04 - Oct 23, 2024</span>
-            <span><i class="fas fa-globe"></i> Online</span>
+        <div class="col-md-9 card-content">
+          <div class="card-info">
+            <h4>VCT Hackathon: Esports Manager Challenge</h4>
+            <p><strong>$61,000</strong> in prizes - 2621 participants</p>
+            <div class="description">
+              Compete in creating AI-driven solutions for esports team management, with a focus on machine learning and gaming data analysis.
+            </div>
+            <div class="hackathon-info">
+              <span><i class="fas fa-calendar-alt"></i> Sep 04 - Oct 23, 2024</span>
+            </div>
+            <div class="hackathon-tags">
+              <span><i class="fas fa-brain"></i> Machine Learning/AI</span>
+              <span><i class="fas fa-database"></i> Databases</span>
+              <span><i class="fas fa-gamepad"></i> Gaming</span>
+            </div>
           </div>
-          <div class="hackathon-tags">
-            <span>Machine Learning/AI</span>
-            <span>Databases</span>
-            <span>Gaming</span>
-          </div>
+          <a href="#" class="register-btn">Register Now</a>
         </div>
       </div>
     </div>
@@ -68,21 +188,26 @@
     <!-- Hackathon Card 2 -->
     <div class="hackathon-card">
       <div class="row">
-        <div class="col-md-3">
-          <img src="../static/img/image.png" alt="News Image">
+        <div class="col-md-3 image-container">
+          <img src="../static/img/image.png" alt="Hackathon Image">
         </div>
-        <div class="col-md-9">
-          <h4>Microsoft Fabric and AI Learning Hackathon</h4>
-          <p><strong>$10,000</strong> in prizes - 2586 participants</p>
-          <div class="hackathon-info">
-            <span><i class="fas fa-calendar-alt"></i> Sep 24 - Nov 12, 2024</span>
-            <span><i class="fas fa-globe"></i> Online</span>
+        <div class="col-md-9 card-content">
+          <div class="card-info">
+            <h4>Microsoft Fabric and AI Learning Hackathon</h4>
+            <p><strong>$10,000</strong> in prizes - 2586 participants</p>
+            <div class="description">
+              Learn and implement AI and data management using Microsoft Fabric. Ideal for beginners interested in AI and database technologies.
+            </div>
+            <div class="hackathon-info">
+              <span><i class="fas fa-calendar-alt"></i> Sep 24 - Nov 12, 2024</span>
+            </div>
+            <div class="hackathon-tags">
+              <span><i class="fas fa-user-graduate"></i> Beginner Friendly</span>
+              <span><i class="fas fa-database"></i> Databases</span>
+              <span><i class="fas fa-robot"></i> Machine Learning/AI</span>
+            </div>
           </div>
-          <div class="hackathon-tags">
-            <span>Beginner Friendly</span>
-            <span>Databases</span>
-            <span>Machine Learning/AI</span>
-          </div>
+          <a href="#" class="register-btn">Register Now</a>
         </div>
       </div>
     </div>
@@ -90,20 +215,25 @@
     <!-- Hackathon Card 3 -->
     <div class="hackathon-card">
       <div class="row">
-        <div class="col-md-3">
-          <img src="https://via.placeholder.com/150" alt="News Image">
+        <div class="col-md-3 image-container">
+          <img src="https://via.placeholder.com/150" alt="Hackathon Image">
         </div>
-        <div class="col-md-9">
-          <h4>Google Photorealistic 3D Maps Challenge</h4>
-          <p><strong>$26,000</strong> in prizes - 650 participants</p>
-          <div class="hackathon-info">
-            <span><i class="fas fa-calendar-alt"></i> Oct 01 - Nov 20, 2024</span>
-            <span><i class="fas fa-globe"></i> Online</span>
+        <div class="col-md-9 card-content">
+          <div class="card-info">
+            <h4>Google Photorealistic 3D Maps Challenge</h4>
+            <p><strong>$26,000</strong> in prizes - 650 participants</p>
+            <div class="description">
+              A challenge to create realistic 3D maps using web-based tools. Perfect for those passionate about web development and geospatial visualization.
+            </div>
+            <div class="hackathon-info">
+              <span><i class="fas fa-calendar-alt"></i> Oct 01 - Nov 20, 2024</span>
+            </div>
+            <div class="hackathon-tags">
+              <span><i class="fas fa-globe"></i> Web</span>
+              <span><i class="fas fa-code"></i> Low/No Code</span>
+            </div>
           </div>
-          <div class="hackathon-tags">
-            <span>Web</span>
-            <span>Low/No Code</span>
-          </div>
+          <a href="#" class="register-btn">Register Now</a>
         </div>
       </div>
     </div>
