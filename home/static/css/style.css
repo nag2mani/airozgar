@@ -1,6 +1,7 @@
-.container{
+body {
     font-family: 'Poppins', 'Roboto', sans-serif;
-}
+  }
+
 .filter-section {
     width: 20%;
 }
