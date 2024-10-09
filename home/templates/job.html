@@ -10,12 +10,6 @@
                 <h1>AI, ML, and Data Science Jobs For Freshers</h1>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Main Content -->
-<div class="container-fluid">
-    <div class="container">
         <!-- Buttons for Job of the Day and Job of the Week -->
         <div class="row">
             <div class="col-md-12 top-buttons text-center">
@@ -23,20 +17,18 @@
                 <button class="btn btn-secondary mx-2">Job of the Week</button>
             </div>
         </div>
-        {% if messages %}
-        <div class="alert alert-primary font-weight-bold" role="alert">
-            {% for message in messages %}
-            {{ message }}
-            {% endfor %}
-        </div>
-        {% endif %}
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="container">
         <div class="row">
             <!-- Filter Section (25% width) -->
             <div class="col-md-3 filter-section">
                 <h5 class="card-title">Filter Jobs</h5>
                 <div class="card">
                     <div class="card-body">
-
                         <!-- Salary Filter -->
                         <div class="mb-4">
                             <h5>Salary (Lacs)</h5>
@@ -46,7 +38,7 @@
                                 <input type="checkbox" class="salary-filter" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
                                 <input type="checkbox" class="salary-filter" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
                                 <input type="checkbox" class="salary-filter" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
-                                <input type="checkbox" class="salary-filter" id="salary6" name="salary" value="25+"> 25 + Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary6" name="salary" value="25+"> 25+ Lacs<br>
                             </div>
                         </div>
 
@@ -58,7 +50,6 @@
                                 <option value="AI">AI</option>
                                 <option value="ML">ML</option>
                                 <option value="Data Science">Data Science</option>
-                                <!-- Add more categories as needed -->
                             </select>
                         </div>
 
@@ -87,22 +78,59 @@
 
             <!-- Job Cards Section (75% width) -->
             <div class="col-md-9 job-cards-section">
-                <h2 class="text-center">Available Jobs</h2>
+                <h5 class="card-title">Job Listings</h5> <!-- Add a title for job listings -->
                 <div class="row" id="job-list">
                     <!-- Loop through the jobs -->
                     {% for job in jobs %}
                     <div class="col-md-12 mb-4 job-item" data-salary="{{ job.pay_range }}" data-category="{{ job.category }}" data-location="{{ job.location }}">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ job.title }}</h5>
-                                <p class="card-text">{{ job.description }}</p>
-                                <p class="card-text"><strong>Field:</strong> {{ job.field }}</p>
-                                <p class="card-text"><strong>Category:</strong> {{ job.category }}</p>
-                                <p class="card-text"><strong>Pay Range:</strong> {{ job.pay_range }} Lacs</p>
-                                <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
-                                <p class="card-text"><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
-                                <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
-                                <a href="{% url 'apply_job' job.id %}" class="btn btn-secondary">Apply</a>
+                        <div class="card job-card p-3">
+                            <div class="d-flex align-items-start">
+                                <!-- Left side (Company image, Company name) -->
+                                <div class="company-info d-flex flex-column align-items-center">
+                                    <img src="path-to-company-logo" alt="Company Logo" class="company-logo mb-2">
+                                    <span class="company-name">{{ job.company_name }}</span>
+                                </div>
+
+                                <!-- Middle Section (Job Title, Job Description) -->
+                                <div class="job-info flex-grow-1 ms-3">
+                                    <!-- Job Title -->
+                                    <h5 class="job-title">{{ job.title }}</h5>
+
+                                    <!-- Field and Category -->
+                                    <div class="job-details mt-2">
+                                        <span><strong>Field:</strong> {{ job.field }}</span>
+                                        <span><strong>Category:</strong> {{ job.category }}</span>
+                                    </div>
+
+                                    <!-- Location and Pay Range -->
+                                    <div class="job-details mt-2">
+                                        <span><strong>Location:</strong> {{ job.location }}</span>
+                                        <span><strong>Pay Range:</strong> {{ job.pay_range }} Lacs</span>
+                                    </div>
+
+                                    <!-- Job Description Section -->
+                                    <div class="job-description mt-2">
+                                        {{ job.description|slice:":100" }}...
+                                        <a href="#" class="see-more-link">See More</a>
+                                        <p class="full-description" style="display: none;">
+                                            {{ job.description }}<br>
+                                            <strong>Skills:</strong> Python, Machine Learning, Data Analysis, TensorFlow, Deep Learning
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Right Section (Expiry Date, Bookmark, Apply Button) -->
+                                <div class="action-section text-end ms-3">
+                                    <!-- Expiry Date with background -->
+                                    <div class="expiry-date bg-warning text-white px-2 py-1">
+                                        Expires: {{ job.expiry_date }}
+                                    </div>
+                                    <!-- Bookmark and Apply Button -->
+                                    <div class="mt-3 d-flex justify-content-end align-items-center">
+                                        <i class="fas fa-bookmark me-3"></i>
+                                        <a href="{% url 'apply_job' job.id %}" class="btn btn-secondary">Apply</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,49 +145,165 @@
     </div>
 </div>
 
+
+<!-- CSS Styling for job card -->
+<style>
+    /* General Styling for the Page */
+    .job-cards-section h2 {
+        margin-bottom: 30px;
+    }
+
+    .job-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .job-card:hover {
+        transform: scale(1.02);
+    }
+
+    /* Company Info Section */
+    .company-info {
+        text-align: center;
+        width: 120px;
+    }
+
+    .company-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: #f5f5f5;
+        padding: 5px;
+    }
+
+    .company-name {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #333;
+        margin-top: 10px;
+    }
+
+    /* Job Info Section */
+    .job-info {
+        flex-grow: 1;
+    }
+
+    .job-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .job-details {
+        margin-top: 5px;
+        font-size: 0.95rem;
+        color: #666;
+    }
+    .job-details span {
+        margin-right: 25px;
+    }
+
+    /* Reduce space between Location and Pay Range */
+    .job-location-pay {
+        font-size: 0.95rem;
+        color: #666;
+        margin-top: 0; /* Remove or reduce margin-top */
+        padding: 0; /* Optional: remove padding if necessary */
+    }
+
+
+    /* Action Section (Expiry Date, Apply Button, Bookmark) */
+    .action-section .expiry-date {
+        font-size: 0.85rem;
+        font-weight: bold;
+        border-radius: 4px;
+    }
+
+    .action-section i {
+        color: #888;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+
+    .action-section i:hover {
+        color: #333;
+    }
+
+    /* See More/See Less functionality */
+    .see-more-link {
+        color: #007bff;
+        cursor: pointer;
+    }
+
+    .see-more-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .company-info, .job-info, .action-section {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .action-section {
+            margin-top: 20px;
+        }
+    }
+</style>
+
+<!-- Script to handle "See More" functionality -->
 <script>
-$(document).ready(function() {
-    $('#apply-filters').click(function() {
-        var selectedSalaries = [];
-        $('.salary-filter:checked').each(function() {
-            selectedSalaries.push($(this).val());
+    $(document).ready(function() {
+        // Toggle job description visibility
+        $('.see-more-link').click(function(e) {
+            e.preventDefault();
+            $(this).closest('.job-description').find('.full-description').slideToggle();
+            $(this).text($(this).text() == 'See More' ? 'See Less' : 'See More');
         });
 
-        var selectedCategory = $('#category').val();
-        var selectedJobType = $('#job-type').val();
-        var selectedLocation = $('#location').val().toLowerCase();
+        // Apply filter logic
+        $('#apply-filters').click(function() {
+            var selectedSalaries = [];
+            $('input.salary-filter:checked').each(function() {
+                selectedSalaries.push($(this).val());
+            });
 
-        $('.job-item').each(function() {
-            var salary = $(this).data('salary');
-            var category = $(this).data('category');
-            var location = $(this).data('location').toLowerCase();
+            var selectedCategory = $('#category').val();
+            var selectedLocation = $('#location').val();
+            var selectedJobType = $('#job-type').val();
 
-            var showJob = true;
+            $('.job-item').each(function() {
+                var salary = $(this).data('salary');
+                var category = $(this).data('category');
+                var location = $(this).data('location');
 
-            if (selectedSalaries.length > 0 && !selectedSalaries.includes(salary)) {
-                showJob = false;
-            }
+                var match = true;
 
-            if (selectedCategory && selectedCategory !== category) {
-                showJob = false;
-            }
+                if (selectedSalaries.length > 0 && !selectedSalaries.includes(salary.toString())) {
+                    match = false;
+                }
 
-            if (selectedJobType && selectedJobType !== 'Choose...' && selectedJobType !== 'Hybrid') {
-                showJob = false;
-            }
+                if (selectedCategory && selectedCategory !== category) {
+                    match = false;
+                }
 
-            if (selectedLocation && !location.includes(selectedLocation)) {
-                showJob = false;
-            }
+                if (selectedLocation && !location.includes(selectedLocation)) {
+                    match = false;
+                }
 
-            if (showJob) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+                if (match) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
         });
     });
-});
 </script>
 
 {% endblock %}
