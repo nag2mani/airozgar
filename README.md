@@ -13,8 +13,6 @@ Unleash your creativity by participating in the latest AI/ML contests and hackat
 ### 3. Breaking News
 Stay informed with breaking tech news, industry updates, and trends in AI & ML, all delivered to your fingertips.
 
-### 4. Customer Testimonials
-Discover the success stories of our users who have kickstarted their careers with the help of **AI Rozgar**. Our platform provides relevant job suggestions and continuous support.
 
 ## 💼 What We Offer
 
