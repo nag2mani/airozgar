@@ -1,4 +1,3 @@
-```markdown
 # AI Rozgar
 
 Kickstart your AI & ML career journey with **AI Rozgar**—a platform dedicated to helping freshers find internships, job opportunities, and stay updated with the latest innovations in the fields of AI & ML.
@@ -59,4 +58,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🌟 Credits
 
 Built by **Nagmani Kumar, Divyansh Mishra, Bharat Suthar** and the **AI Rozgar** team.
-```
