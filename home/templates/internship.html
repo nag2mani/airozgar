@@ -124,6 +124,41 @@
             margin-top: 20px;
         }
     }
+
+    /* Modal Styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 
@@ -138,8 +173,8 @@
         <!-- Buttons for Internship of the Day and Internship of the Week -->
         <div class="row">
             <div class="col-md-12 top-buttons text-center">
-                <button class="btn btn-secondary mx-2">Internship of the Day</button>
-                <button class="btn btn-secondary mx-2">Internship of the Week</button>
+                <button class="btn btn-secondary mx-2" id="internship-of-the-day">Internship of the Day</button>
+                <!-- <button class="btn btn-secondary mx-2">Internship of the Week</button> -->
             </div>
         </div>
     </div>
@@ -214,14 +249,14 @@
                     <div class="row" id="internship-list">
                         <!-- Loop through the internships -->
                         {% for internship in internships %}
-                        <div class="col-md-12 mb-4 internship-item" data-stipend="{{ internship.stipend_range }}"
+                        <div class="col-md-12 mb-4 internship-item" data-stipend="{{ internship.stipend }}"
                             data-category="{{ internship.category }}" data-location="{{ internship.location }}">
                             <div class="card internship-card p-3">
                                 <div class="d-flex align-items-start">
                                     <!-- Left side (Company image, Company name) -->
                                     <div class="company-info d-flex flex-column align-items-center">
                                         <img src="path-to-company-logo" alt="Company Logo" class="company-logo mb-2">
-                                        <span class="company-name">{{ internship.company_name }}</span>
+                                        <span class="company-name">{{ internship.company.name }}</span>
                                     </div>
 
                                     <!-- Middle Section (Internship Title, Internship Description) -->
@@ -238,7 +273,7 @@
                                         <!-- Location and Stipend Range -->
                                         <div class="internship-details mt-2">
                                             <span><strong>Location:</strong> {{ internship.location }}</span>
-                                            <span><strong>Stipend Range:</strong> {{ internship.stipend }} Lacs</span>
+                                            <span><strong>Stipend Range:</strong> {{ internship.stipend }}</span>
                                         </div>
 
                                         <!-- Internship Description Section -->
@@ -274,5 +309,46 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Structure -->
+<div id="internship-of-the-day-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="internship-of-the-day-content"></div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('internship-of-the-day').addEventListener('click', function () {
+        const internshipItems = document.querySelectorAll('.internship-item');
+        let highestStipendInternship = null;
+        let highestStipend = 0;
+
+        internshipItems.forEach(internship => {
+            const stipendRange = parseFloat(internship.getAttribute('data-stipend').replace(/[^0-9.-]+/g, ""));
+            if (stipendRange > highestStipend) {
+                highestStipend = stipendRange;
+                highestStipendInternship = internship;
+            }
+        });
+
+        if (highestStipendInternship) {
+            const internshipCard = highestStipendInternship.querySelector('.internship-card');
+            const internshipContent = internshipCard.innerHTML;
+            document.getElementById('internship-of-the-day-content').innerHTML = internshipContent;
+            document.getElementById('internship-of-the-day-modal').style.display = 'block';
+        }
+    });
+
+    document.querySelector('.close').addEventListener('click', function () {
+        document.getElementById('internship-of-the-day-modal').style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target == document.getElementById('internship-of-the-day-modal')) {
+            document.getElementById('internship-of-the-day-modal').style.display = 'none';
+        }
+    });
+</script>
 
 {% endblock %}
