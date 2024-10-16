@@ -74,7 +74,7 @@ class Job(models.Model):
     expiry_date = models.DateField()
     created_date = models.DateField(auto_now_add=True)
     skills = models.TextField()
-    student_applied = models.JSONField()  # To store hashmap of students applied
+    student_applied = models.JSONField()
 
     def __str__(self):
         return f"{self.company} - {self.category}"
