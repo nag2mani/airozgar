@@ -24,6 +24,9 @@ def internship(request):
 def contest(request):
     return render(request, 'contest.html')
 
+def bookmark(request):
+    return render(request, 'bookmark.html')
+
 
 def news(request):
     return render(request, 'news.html')

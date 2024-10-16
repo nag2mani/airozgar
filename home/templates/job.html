@@ -2,145 +2,6 @@
 {% extends 'base.html' %}
 {% block start %}
 
-<!-- Hero Section -->
-<div class="container-xxl hero-header">
-    <div class="container py-3">
-        <div class="row g-5">
-            <div class="col-12 text-center">
-                <h1>AI, ML, and Data Science Jobs For Freshers</h1>
-            </div>
-        </div>
-        <!-- Buttons for Job of the Day and Job of the Week -->
-        <div class="row">
-            <div class="col-md-12 top-buttons text-center">
-                <button class="btn btn-secondary mx-2">Job of the Day</button>
-                <button class="btn btn-secondary mx-2">Job of the Week</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Main Content -->
-<div class="container-fluid">
-    <div class="container">
-        <div class="row">
-            <!-- Filter Section (25% width) -->
-            <div class="col-md-3 filter-section">
-                <h5 class="card-title">Filter Jobs</h5>
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Salary Filter -->
-                        <div class="mb-4">
-                            <h5>Salary (Lacs)</h5>
-                            <div>
-                                <input type="checkbox" class="salary-filter" id="salary1" name="salary" value="0-5"> 0-5 Lacs<br>
-                                <input type="checkbox" class="salary-filter" id="salary2" name="salary" value="5-10"> 5-10 Lacs<br>
-                                <input type="checkbox" class="salary-filter" id="salary3" name="salary" value="10-15"> 10-15 Lacs<br>
-                                <input type="checkbox" class="salary-filter" id="salary4" name="salary" value="15-20"> 15-20 Lacs<br>
-                                <input type="checkbox" class="salary-filter" id="salary5" name="salary" value="20-25"> 20-25 Lacs<br>
-                                <input type="checkbox" class="salary-filter" id="salary6" name="salary" value="25+"> 25+ Lacs<br>
-                            </div>
-                        </div>
-
-                        <!-- Category Filter -->
-                        <div class="mb-4">
-                            <label for="category" class="form-label">Category</label>
-                            <select id="category" class="form-select">
-                                <option selected>Choose...</option>
-                                <option value="AI">AI</option>
-                                <option value="ML">ML</option>
-                                <option value="Data Science">Data Science</option>
-                            </select>
-                        </div>
-
-                        <!-- Job Type Filter -->
-                        <div class="mb-4">
-                            <label for="job-type" class="form-label">Job Type</label>
-                            <select id="job-type" class="form-select">
-                                <option selected>Choose...</option>
-                                <option value="Remote">Remote</option>
-                                <option value="Onsite">Onsite</option>
-                                <option value="Hybrid">Hybrid</option>
-                            </select>
-                        </div>
-
-                        <!-- Location Filter -->
-                        <div class="mb-4">
-                            <label for="location" class="form-label">Location</label>
-                            <input type="text" id="location" class="form-control" placeholder="Enter location">
-                        </div>
-
-                        <!-- Apply Filter Button -->
-                        <button id="apply-filters" class="btn btn-secondary w-100">Apply Filters</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Job Cards Section (75% width) -->
-            <div class="col-md-9 job-cards-section">
-                <h5 class="card-title">Job Listings</h5> <!-- Add a title for job listings -->
-                <div class="row" id="job-list">
-                    <!-- Loop through the jobs -->
-                    {% for job in jobs %}
-                    <div class="col-md-12 mb-4 job-item" data-salary="{{ job.pay_range }}" data-category="{{ job.category }}" data-location="{{ job.location }}">
-                        <div class="card job-card p-3">
-                            <div class="d-flex align-items-start">
-                                <!-- Left side (Company image, Company name) -->
-                                <div class="company-info d-flex flex-column align-items-center">
-                                    <img src="path-to-company-logo" alt="Company Logo" class="company-logo mb-2">
-                                    <span class="company-name">{{ job.company_name }}</span>
-                                </div>
-
-                                <!-- Middle Section (Job Title, Job Description) -->
-                                <div class="job-info flex-grow-1 ms-3">
-                                    <!-- Job Title -->
-                                    <h5 class="job-title">{{ job.title }}</h5>
-
-                                    <!-- Field and Category -->
-                                    <div class="job-details mt-2">
-                                        <span><strong>Field:</strong> {{ job.field }}</span>
-                                        <span><strong>Category:</strong> {{ job.category }}</span>
-                                    </div>
-
-                                    <!-- Location and Pay Range -->
-                                    <div class="job-details mt-2">
-                                        <span><strong>Location:</strong> {{ job.location }}</span>
-                                        <span><strong>Pay Range:</strong> {{ job.pay_range }} Lacs</span>
-                                    </div>
-
-                                    <!-- Job Description Section -->
-                                    <div class="job-description mt-2">
-                                        <strong>Description: </strong>{{ job.description }}
-                                    </div>
-                                </div>
-
-                                <!-- Right Section (Expiry Date, Bookmark, Apply Button) -->
-                                <div class="action-section text-end ms-3">
-                                    <!-- Expiry Date with background -->
-                                    <div class="expiry-date bg-warning text-white px-2 py-1">
-                                        Expires: {{ job.expiry_date }}
-                                    </div>
-                                    <!-- Bookmark and Apply Button -->
-                                    <div class="mt-3 d-flex justify-content-end align-items-center">
-                                        <i class="fas fa-bookmark me-3"></i>
-                                        <a href="{% url 'apply_job' job.id %}" class="btn btn-secondary">Apply</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="col-md-12">
-                        <p>No jobs available at the moment.</p>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <!-- CSS Styling for job card -->
 <style>
     /* General Styling for the Page */
@@ -198,6 +59,7 @@
         font-size: 0.95rem;
         color: #666;
     }
+
     .job-details span {
         margin-right: 25px;
     }
@@ -206,8 +68,10 @@
     .job-location-pay {
         font-size: 0.95rem;
         color: #666;
-        margin-top: 0; /* Remove or reduce margin-top */
-        padding: 0; /* Optional: remove padding if necessary */
+        margin-top: 0;
+        /* Remove or reduce margin-top */
+        padding: 0;
+        /* Optional: remove padding if necessary */
     }
 
 
@@ -216,6 +80,25 @@
         font-size: 0.85rem;
         font-weight: bold;
         border-radius: 4px;
+        white-space: nowrap;
+        /* Prevent text from wrapping */
+        overflow: hidden;
+        /* Hide any overflow */
+        text-overflow: ellipsis;
+        /* Add ellipsis if text overflows */
+        padding: 4px 8px;
+        /* Add some padding for better appearance */
+    }
+
+    .scrollable-container {
+        max-height: 600px;
+        /* Adjust the height as needed */
+        overflow-y: auto;
+        /* Enable vertical scrolling */
+        border: 1px solid #ddd;
+        /* Optional: Add a border for better visibility */
+        padding: 18px;
+        /* Optional: Add padding for better appearance */
     }
 
     .action-section i {
@@ -240,7 +123,10 @@
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
-        .company-info, .job-info, .action-section {
+
+        .company-info,
+        .job-info,
+        .action-section {
             flex-direction: column;
             align-items: center;
         }
@@ -251,54 +137,153 @@
     }
 </style>
 
-<!-- Script to handle "See More" functionality -->
-<script>
-    $(document).ready(function() {
-        // Toggle job description visibility
-        $('.see-more-link').click(function(e) {
-            e.preventDefault();
-            $(this).closest('.job-description').find('.full-description').slideToggle();
-            $(this).text($(this).text() == 'See More' ? 'See Less' : 'See More');
-        });
 
-        // Apply filter logic
-        $('#apply-filters').click(function() {
-            var selectedSalaries = [];
-            $('input.salary-filter:checked').each(function() {
-                selectedSalaries.push($(this).val());
-            });
+<!-- Hero Section -->
+<div class="container-xxl hero-header">
+    <div class="container py-3">
+        <div class="row g-5">
+            <div class="col-12 text-center">
+                <h1>AI, ML, and Data Science Jobs For Freshers</h1>
+            </div>
+        </div>
+        <!-- Buttons for Job of the Day and Job of the Week -->
+        <div class="row">
+            <div class="col-md-12 top-buttons text-center">
+                <button class="btn btn-secondary mx-2">Job of the Day</button>
+                <button class="btn btn-secondary mx-2">Job of the Week</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            var selectedCategory = $('#category').val();
-            var selectedLocation = $('#location').val();
-            var selectedJobType = $('#job-type').val();
+<!-- Main Content -->
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <!-- Filter Section (25% width) -->
+            <div class="col-md-3 filter-section">
+                <!-- <h5 class="card-title">Filter Jobs</h5> -->
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Salary Filter -->
+                        <div class="mb-4">
+                            <h5>Salary (Lacs)</h5>
+                            <div>
+                                <input type="checkbox" class="salary-filter" id="salary1" name="salary" value="0-5"> 0-5
+                                Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary2" name="salary" value="5-10">
+                                5-10 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary3" name="salary" value="10-15">
+                                10-15 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary4" name="salary" value="15-20">
+                                15-20 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary5" name="salary" value="20-25">
+                                20-25 Lacs<br>
+                                <input type="checkbox" class="salary-filter" id="salary6" name="salary" value="25+"> 25+
+                                Lacs<br>
+                            </div>
+                        </div>
 
-            $('.job-item').each(function() {
-                var salary = $(this).data('salary');
-                var category = $(this).data('category');
-                var location = $(this).data('location');
+                        <!-- Category Filter -->
+                        <div class="mb-4">
+                            <label for="category" class="form-label">Category</label>
+                            <select id="category" class="form-select">
+                                <option selected>Choose...</option>
+                                <option value="AI">AI</option>
+                                <option value="ML">ML</option>
+                                <option value="Data Science">Data Science</option>
+                            </select>
+                        </div>
 
-                var match = true;
+                        <!-- Job Type Filter -->
+                        <div class="mb-4">
+                            <label for="job-type" class="form-label">Job Type</label>
+                            <select id="job-type" class="form-select">
+                                <option selected>Choose...</option>
+                                <option value="Remote">Remote</option>
+                                <option value="Onsite">Onsite</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
 
-                if (selectedSalaries.length > 0 && !selectedSalaries.includes(salary.toString())) {
-                    match = false;
-                }
+                        <!-- Location Filter -->
+                        <div class="mb-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" id="location" class="form-control" placeholder="Enter location">
+                        </div>
 
-                if (selectedCategory && selectedCategory !== category) {
-                    match = false;
-                }
+                        <!-- Apply Filter Button -->
+                        <button id="apply-filters" class="btn btn-secondary w-100">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
 
-                if (selectedLocation && !location.includes(selectedLocation)) {
-                    match = false;
-                }
+            <!-- Job Cards Section (75% width) -->
+            <div class="col-md-9 job-cards-section">
+                <!-- <h5 class="card-title">Job Listings</h5> -->
+                <div class="scrollable-container">
+                    <div class="row" id="job-list">
+                        <!-- Loop through the jobs -->
+                        {% for job in jobs %}
+                        <div class="col-md-12 mb-4 job-item" data-salary="{{ job.pay_range }}"
+                            data-category="{{ job.category }}" data-location="{{ job.location }}">
+                            <div class="card job-card p-3">
+                                <div class="d-flex align-items-start">
+                                    <!-- Left side (Company image, Company name) -->
+                                    <div class="company-info d-flex flex-column align-items-center">
+                                        <img src="path-to-company-logo" alt="Company Logo" class="company-logo mb-2">
+                                        <span class="company-name">{{ job.company_name }}</span>
+                                    </div>
 
-                if (match) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        });
-    });
-</script>
+                                    <!-- Middle Section (Job Title, Job Description) -->
+                                    <div class="job-info flex-grow-1 ms-3">
+                                        <!-- Job Title -->
+                                        <h5 class="job-title">{{ job.title }}</h5>
+
+                                        <!-- Field and Category -->
+                                        <div class="job-details mt-2">
+                                            <span><strong>Field:</strong> {{ job.field }}</span>
+                                            <span><strong>Category:</strong> {{ job.category }}</span>
+                                        </div>
+
+                                        <!-- Location and Pay Range -->
+                                        <div class="job-details mt-2">
+                                            <span><strong>Location:</strong> {{ job.location }}</span>
+                                            <span><strong>Pay Range:</strong> {{ job.pay_range }} Lacs</span>
+                                        </div>
+
+                                        <!-- Job Description Section -->
+                                        <div class="job-description mt-2">
+                                            <strong>Description: </strong>{{ job.description }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Section (Expiry Date, Bookmark, Apply Button) -->
+                                    <div class="action-section text-end ms-3">
+                                        <!-- Expiry Date with background -->
+                                        <div class="expiry-date bg-warning text-white px-2 py-1">
+                                            Expires: {{ job.expiry_date }}
+                                        </div>
+                                        <!-- Bookmark and Apply Button -->
+                                        <div class="mt-3 d-flex justify-content-end align-items-center">
+                                            <i class="fas fa-bookmark me-3"></i>
+                                            <a href="{% url 'apply_job' job.id %}" class="btn btn-secondary">Easy
+                                                Apply</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-md-12">
+                            <p>No jobs available at the moment.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
