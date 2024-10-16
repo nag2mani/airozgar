@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <!-- Salary Filter -->
                         <div class="mb-4">
-                            <h5>Stipend (Thousands)</h5>
+                            <h5>Stipend</h5>
                             <div>
                                 <input type="checkbox" class="stipend-filter" id="stipend1" name="stipend" value="0-5000"> 0 - 5000<br>
                                 <input type="checkbox" class="stipend-filter" id="stipend2" name="stipend" value="5001-10000"> 5001 - 10000<br>
@@ -106,17 +106,12 @@
                                     <!-- Location and Stipend Range -->
                                     <div class="internship-details mt-2">
                                         <span><strong>Location:</strong> {{ internship.location }}</span>
-                                        <span><strong>Stipend Range:</strong> {{ internship.stipend_range }} Lacs</span>
+                                        <span><strong>Stipend Range:</strong> {{ internship.stipend }} Lacs</span>
                                     </div>
 
                                     <!-- Internship Description Section -->
                                     <div class="internship-description mt-2">
-                                        {{ internship.description|slice:":100" }}...
-                                        <a href="#" class="see-more-link">See More</a>
-                                        <p class="full-description" style="display: none;">
-                                            {{ internship.description }}<br>
-                                            <strong>Skills:</strong> Python, Machine Learning, Data Analysis, TensorFlow, Deep Learning
-                                        </p>
+                                        <strong>Description: </strong>{{ internship.description }}
                                     </div>
                                 </div>
 
