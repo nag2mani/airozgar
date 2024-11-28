@@ -25,8 +25,6 @@ class Student(models.Model):
     def __str__(self):
         return self.user.username
 
-
-
 # Contest Model
 class Contest(models.Model):
     link = models.URLField()
@@ -96,4 +94,3 @@ class Internship(models.Model):
 
     def __str__(self):
         return f"{self.company} - {self.category}"
-

@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
+
 
 def home(request):
     return render(request, 'index.html')
@@ -16,13 +18,55 @@ def job(request):
     return render(request, 'job.html', {'jobs': jobs})
 
 
+# def internship(request):
+#     internships = Internship.objects.all()
+#     return render(request, 'internship.html', {'internships': internships})
+
+
 def internship(request):
+    # Get filter parameters from the request
+    stipend_ranges = request.GET.getlist('stipend', [])
+    category = request.GET.get('category', '')
+    internship_type = request.GET.get('internship_type', '')
+    location = request.GET.get('location', '')
+
+    # Start with all internships
     internships = Internship.objects.all()
+
+    # Apply stipend range filter
+    if stipend_ranges:
+        stipend_filters = Q()
+        for stipend_range in stipend_ranges:
+            if stipend_range == '0-5000':
+                stipend_filters |= Q(stipend__lte=5000)
+            elif stipend_range == '5001-10000':
+                stipend_filters |= Q(stipend__gt=5000, stipend__lte=10000)
+            elif stipend_range == '10001-15000':
+                stipend_filters |= Q(stipend__gt=10000, stipend__lte=15000)
+            elif stipend_range == '15001-20000':
+                stipend_filters |= Q(stipend__gt=15000, stipend__lte=20000)
+            elif stipend_range == '20001+':
+                stipend_filters |= Q(stipend__gt=20000)
+        internships = internships.filter(stipend_filters)
+
+    # Apply category filter
+    if category:
+        internships = internships.filter(category__icontains=category)
+
+    # Apply internship type filter
+    if internship_type:
+        internships = internships.filter(type__icontains=internship_type)
+
+    # Apply location filter
+    if location:
+        internships = internships.filter(location__icontains=location)
+
     return render(request, 'internship.html', {'internships': internships})
 
 
 def contest(request):
     return render(request, 'contest.html')
+
 
 def bookmark(request):
     return render(request, 'bookmark.html')
