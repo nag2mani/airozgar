@@ -2,161 +2,254 @@
 {% block start %}
 
 <style>
+    /* Sidebar */
     #sidebar {
         width: 250px;
         min-height: 100vh;
+        background-color: #f8f9fa;
+        width: 200px;
     }
 
-    #main-content {
-        flex: 1;
-        background-color: #fff;
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        margin-bottom: 15px;
     }
-    .container-fluid {
-        font-family: 'Poppins', 'Roboto', sans-serif;
+
+    .student-name {
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
     }
-    .nav-link {
-        color: #555;
-        margin-bottom: 10px;
+
+    .sidebar-stat {
+        font-size: 18px;
+        margin-bottom: 15px;
+        text-align: left;
+        padding: 10px 0;
+    }
+
+    .btn-edit-profile {
+        display: block;
+        margin: 20px auto;
+        font-size: 14px;
+        padding: 8px 15px;
+        text-align: center;
+    }
+
+    /* Navbar */
+    .navbar-tabs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #f4f4f7;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .navbar-tabs a {
         font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 8px 20px;
+        color: #555;
+        border: 2px solid transparent;
+        border-radius: 5px;
     }
 
-    .nav-link:hover {
-        color: #ff6b6b;
-    }
-
-    .card {
-        border-radius: 10px;
-        border: none;
-        background-color: #f4f4f7;
-    }
-
-    .card h5,
-    .card p {
-        margin-bottom: 0;
-    }
-
-    .table {
-        background-color: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    .table th {
-        background-color: #f4f4f7;
-    }
-
-    .progress-bar {
+    .navbar-tabs a.active {
         background-color: #ff6b6b;
+        color: #fff;
+        border-color: #ff6b6b;
+    }
+
+    /* Cards */
+    .card {
+        display: none;
+    }
+
+    .card.active {
+        display: block;
+    }
+
+    .navbar-tabs {
+        display: flex;
+        gap: 20px;
+        font-size: 1.1rem;
+    }
+    .navbar-tabs .tab-link {
+        text-decoration: none;
+        color: #007bff;
+        padding: 8px 16px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+    .navbar-tabs .tab-link.active {
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+    }
+    .card {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .custom-sidebar {
+        min-width: 40vh;
+    }
+    .scrollable-container {
+        max-height: 600px;
+        /* Adjust the height as needed */
+        overflow-y: auto;
+        /* Enable vertical scrolling */
+        border: 1px solid #ddd;
+        /* Optional: Add a border for better visibility */
+        padding: 18px;
+        /* Optional: Add padding for better appearance */
+    }
+    .internship-cards-section {
+        margin-bottom: 30px;
+    }
+    .list-group-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px; /* Reduced margin */
+    padding: 10px; /* Reduced padding */
+    font-size: 0.95rem; /* Optional: Slightly smaller font size */
+    }
+    .list-group-item:last-child {
+        margin-bottom: 0; /* Remove extra margin for the last item */
     }
 </style>
 
 <div class="d-flex container-fluid">
-    <div id="sidebar" class="bg-light p-4">
-        <h4 class="mb-4">Hello {{ request.user.student.user.first_name }}!</span></h4>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a href="/student/" class="nav-link">Dashboard</a></li>
-            <li class="nav-item"><a href="/bookmark/" class="nav-link">Bookmarks</a></li>
-            <li class="nav-item"><a href="/editstudent/" class="nav-link">Profile</a></li>
-            <li class="nav-item"><a href="/logout/" class="nav-link material-symbols-sharp">Logout</a></li>
-        </ul>
+    <div id="sidebar" class="p-4 custom-sidebar">
+        <div class="text-center">
+            <img 
+                src="{{ request.user.student.profile_picture.url }}" 
+                alt="{{ request.user.student.user.first_name }}" 
+                class="profile-picture"
+            />
+            <h4 class="student-name">{{ request.user.student.user.first_name }}</h4>
+        </div>
+
+        <div class="sidebar-stat">
+            <strong>Jobs Applied:</strong> {{ applied_jobs.count }}
+        </div>
+        <div class="sidebar-stat">
+            <strong>Internships Applied:</strong> {{ applied_internships.count }}
+        </div>
+        <div class="sidebar-stat">
+            <strong>Total Applications:</strong> {{ applied_jobs.count|add:applied_internships.count }}
+        </div>
+
+        <a href="/editstudent/" class="btn btn-primary btn-edit-profile">Edit Profile</a>
     </div>
-    <!-- Main Content -->
-    <div id="main-content" class="container-fluid p-4">
-        <div class="d-flex justify-content-between mb-4">
-            <h2>Your Dashboard</h2>
-            <input type="text" class="form-control w-25" placeholder="Search">
-        </div>
 
-        <!-- Cards for Total Applications, Job Applications, Internship Applications -->
-        <div class="row text-center">
-            <div class="col-md-4">
-                <div class="card p-4 shadow-sm">
-                    <h5>Total Job Applications</h5>
-                    <p class="display-6">{{ applied_jobs.count }}</p>
-                    <!-- <p>All time</p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 80%;"></div>
-                    </div> -->
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-4 shadow-sm">
-                    <h5>Total Internship Applications</h5>
-                    <p class="display-6">{{ applied_internships.count }}</p>
-                    <!-- <p>All time</p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 40%;"></div>
-                    </div> -->
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-4 shadow-sm">
-                    <h5>Total Applications</h5>
-                    <p class="display-6">{{ applied_jobs.count|add:applied_internships.count }}</p>
-                    <!-- <p>Current..</p>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 85%;"></div>
-                    </div> -->
-                </div>
+    <div id="main-content" class="p-4 flex-grow-1">
+        <!-- Header Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Greeting Message -->
+            <h1 class="mb-0">Hello, {{ request.user.student.user.first_name }}!</h1>
+    
+            <!-- Navbar Tabs -->
+            <div class="navbar-tabs">
+                <a href="#" class="tab-link active" data-target="jobs">Jobs</a>
+                <a href="#" class="tab-link" data-target="internships">Internships</a>
+                <a href="#" class="tab-link" data-target="bookmarks">Bookmarks</a>
             </div>
         </div>
-
-        <div class="d-flex mt-4">
-            <div class="w-50 pr-3 mx-2">
-                <h5 class="text-center font-weight-bold mt-3">Your Applied Jobs</h5>
-                <ul class="list-group">
+    
+        <!-- Jobs Section -->
+        <div class="scrollable-container card active" id="jobs" style="padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <ul class="list-group" style="gap: 20px;">
                     {% for job in applied_jobs %}
-                    <div class="my-3">
-                        <li class="list-group-item">
-                            <h6>{{ job.title }}</h6>
-                            <p><strong>Company:</strong> {{ job.company.company_name }}</p>
-                            <p><strong>Category:</strong> {{ job.category }}</p>
-                            <p><strong>Pay Range:</strong> {{ job.pay_range }} (Lac)</p>
-                            <p><strong>Location:</strong> {{ job.location }}</p>
-                            <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
-                            <div class="mt-2 d-flex flex-wrap gap-2">
-                                <a href="#" class="btn btn-sm btn-warning">Under Review</a>
-                                <a href="#" class="btn btn-sm btn-secondary">Reviewed</a>
-                                <a href="#" class="btn btn-sm btn-info">Shortlisted</a>
-                                <a href="#" class="btn btn-sm btn-primary">Interviewed</a>
-                                <a href="#" class="btn btn-sm btn-success">Selected</a>
-                            </div>
-                        </li>
-                    </div>
+                    <!-- Individual Job Card -->
+                    <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                        <h6 style="font-weight: bold; font-size: 1.2rem;">{{ job.title }}</h6>
+                        <p><strong>Company:</strong> {{ job.company.company_name }}</p>
+                        <p><strong>Category:</strong> {{ job.category }}</p>
+                        <p><strong>Field:</strong> {{ job.field }}</p><br>
+                        <p><strong>Location:</strong> {{ job.location }}</p><br>
+                        <p><strong>Salary:</strong> {{ job.pay_range }}</p><br>
+                        <p><strong>Applied Date:</strong> {{ job.applied_date }}</p>
+                        <p><strong>Description:</strong> {{ job.description }}</p>
+                    </li>
                     {% empty %}
-                    <li class="list-group-item">No jobs applied yet.</li>
+                    <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+                        No jobs applied yet.
+                    </li>
                     {% endfor %}
                 </ul>
-            </div>
+        </div>
 
-            <div class="w-50 pl-3">
-                <h5 class="text-center font-weight-bold mt-3">Your Applied Internships</h5>
-                <ul class="list-group">
-                    {% for internship in applied_internships %}
-                    <div class="my-3">
-                        <li class="list-group-item">
-                            <h6>{{ internship.title }}</h6>
-                            <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
-                            <p><strong>Category:</strong> {{ internship.category }}</p>
-                            <p><strong>Stipend:</strong> {{ internship.stipend }} (Lac)</p>
-                            <p><strong>Location:</strong> {{ internship.location }}</p>
-                            <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
-                            <div class="mt-2 d-flex flex-wrap gap-2">
-                                <a href="#" class="btn btn-sm btn-warning">Under Review</a>
-                                <a href="#" class="btn btn-sm btn-secondary">Reviewed</a>
-                                <a href="#" class="btn btn-sm btn-info">Shortlisted</a>
-                                <a href="#" class="btn btn-sm btn-primary">Interviewed</a>
-                                <a href="#" class="btn btn-sm btn-success">Selected</a>
-                            </div>
-                        </li>
-                    </div>
-                    {% empty %}
-                    <li class="list-group-item">No internships applied yet.</li>
-                    {% endfor %}
-                </ul>
-            </div>
+    
+        <!-- Internships Section -->
+        <div class="card scrollable-container" id="internships" style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <ul class="list-group" style="gap: 20px;">
+                {% for internship in applied_internships %}
+                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                    <h6 style="font-weight: bold; font-size: 1.2rem;">{{ internship.title }}</h6>
+                    <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
+                    <p><strong>Stipend:</strong> {{ internship.stipend }} {{ internship.field }}</p>
+                    <p><strong>Field:</strong> {{ internship.field }}</p>
+                    <p><strong>Category:</strong> {{ internship.category }}</p>
+                    <p><strong>Location:</strong> {{ internship.location }}</p>
+                    <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                    <p><strong>Applied Date</strong>{{ internship.applied_date }}</p>
+                    <p><strong>Description: </strong>{{ internship.description }}</p>
+                </li>
+                {% empty %}
+                <li class="list-group-item">No internships applied yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    
+        <!-- Bookmarks Section -->
+        <div class="card scrollable-container" id="bookmarks" style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <ul class="list-group" style="gap: 20px;">
+                {% for bookmark in bookmarks %}
+                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                    <h6 style="font-weight: bold; font-size: 1.2rem;">{{ bookmark.title }}</h6>
+                </li>
+                {% empty %}
+                <li class="list-group-item">No bookmarks yet.</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const cards = document.querySelectorAll('.card');
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Remove active class from all links and sections
+                tabLinks.forEach(link => link.classList.remove('active'));
+                cards.forEach(card => card.style.display = 'none');
+
+                // Activate clicked link and corresponding section
+                this.classList.add('active');
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+    });
+</script>
 
 {% endblock %}
