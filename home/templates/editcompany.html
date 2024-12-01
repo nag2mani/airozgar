@@ -7,8 +7,20 @@
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h1 class="text-center mb-4">Edit Company Profile</h1>
-                        <form method="post">
+                        <!-- Display Profile Picture -->
+                        {% if company.profile_picture %}
+                        <div class="text-center mb-4">
+                            <img src="{{ company.profile_picture.url }}" alt="Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        {% else %}
+                        <div class="text-center mb-4">
+                            <img src="https://via.placeholder.com/150" alt="Default Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        {% endif %}
+
+                        <h1 class="text-center mb-4">{{ company.company_name }}</h1>
+
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% if messages %}
                             <div class="alert alert-primary font-weight-bold" role="alert">
@@ -19,28 +31,27 @@
                             {% endif %}
                             <div class="form-group">
                                 <label for="company_name">Company Name:</label>
-                                <input type="text" class="form-control" id="company_name" name="company_name"
-                                    value="{{ company.company_name }}" required>
+                                <input type="text" class="form-control" id="company_name" name="company_name" value="{{ company.company_name }}" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="phone_number">Phone Number:</label>
-                                <input type="text" class="form-control" id="phone_number" name="phone_number"
-                                    value="{{ company.phone_number }}" required>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ company.phone_number }}" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="email">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email"
-                                    value="{{ company.email }}" required>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ company.email }}" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="website">Website:</label>
-                                <input type="url" class="form-control" id="website" name="website"
-                                    value="{{ company.website }}" required>
+                                <input type="url" class="form-control" id="website" name="website" value="{{ company.website }}" required>
                             </div>
                             <div class="form-group mt-3">
                                 <label for="location">Location:</label>
-                                <input type="text" class="form-control" id="location" name="location"
-                                    value="{{ company.location }}">
+                                <input type="text" class="form-control" id="location" name="location" value="{{ company.location }}">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="profile_picture">Profile Picture:</label>
+                                <input type="file" class="form-control-file" id="profile_picture" name="profile_picture">
                             </div>
                             <button type="submit" class="btn btn-secondary btn-block mt-3">Update Profile</button>
                         </form>
@@ -50,6 +61,5 @@
         </div>
     </div>
 </body>
-
 
 {% endblock %}

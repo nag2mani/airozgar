@@ -188,16 +188,24 @@ def company(request):
 @login_required(login_url="/login/")
 def edit_company(request):
     company = get_object_or_404(Company, user=request.user)
+
     if request.method == 'POST':
         company.company_name = request.POST.get('company_name')
         company.phone_number = request.POST.get('phone_number')
         company.email = request.POST.get('email')
         company.website = request.POST.get('website')
         company.location = request.POST.get('location')
+
+        # Update profile picture if a new one is uploaded
+        if 'profile_picture' in request.FILES:
+            company.profile_picture = request.FILES['profile_picture']
+
         company.save()
         messages.success(request, "Company profile updated successfully!")
         return redirect('/company/')
+
     return render(request, 'editcompany.html', {'company': company})
+
 
 
 @login_required(login_url="/login/")

@@ -22,6 +22,7 @@ class Student(models.Model):
     branch = models.CharField(max_length=255)
     github = models.URLField(blank=True, null=True)
     email = models.EmailField(max_length=255, blank=True, null=True)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/students/', blank=True, null=True)
 
