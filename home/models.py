@@ -6,10 +6,10 @@ class Company(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Connect with the User model
     company_name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15)
-    email = models.EmailField(max_length=255, default=f"{company_name}@gmail.com")
-    website = models.URLField(max_length=255, default=f"{company_name}.com")
+    email = models.EmailField(max_length=255, blank=True, null=True)
+    website = models.URLField(max_length=255)
     location = models.CharField(max_length=255, blank=True, null=True)
-
+    profile_picture = models.ImageField(upload_to='profile_pictures/companies/', blank=True, null=True)
     def __str__(self):
         return self.company_name
 
@@ -17,10 +17,13 @@ class Company(models.Model):
 # Student table
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Connect with the User model
+    student_name = models.CharField(max_length=255, blank=True, null=True)
     college = models.CharField(max_length=255)
     branch = models.CharField(max_length=255)
     github = models.URLField(blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True)
     linkedin = models.URLField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/students/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username

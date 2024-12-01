@@ -106,14 +106,23 @@ def student(request):
 @login_required(login_url="/login/")
 def edit_student(request):
     student = get_object_or_404(Student, user=request.user)
+    
     if request.method == 'POST':
         student.college = request.POST.get('college')
         student.branch = request.POST.get('branch')
         student.github = request.POST.get('github')
         student.linkedin = request.POST.get('linkedin')
+        student.email = request.POST.get('email')
+        
+        # Update profile picture if a new one is uploaded
+        if 'profile_picture' in request.FILES:
+            student.profile_picture = request.FILES['profile_picture']
+        
+        # Save the changes
         student.save()
         messages.success(request, "Student profile updated successfully!")
-        return redirect('/student/')
+        return redirect('/student/')  # Redirect to a relevant page after saving
+    
     return render(request, 'editstudent.html', {'student': student})
 
 
@@ -356,7 +365,7 @@ def signup(request):
 
             # Create account based on user type
             if user_type == "student":
-                Student.objects.create(user=user, college='', branch='', github='', linkedin='')
+                Student.objects.create(user=user, email= email, student_name = first_name, college='', branch='', github='', linkedin='')
                 messages.success(request, "Student account created successfully")
             elif user_type == "company":
                 Company.objects.create(user=user, company_name=first_name, phone_number='', email=email, website='', location='')
