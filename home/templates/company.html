@@ -2,144 +2,228 @@
 {% block start %}
 
 <style>
+    /* Sidebar */
     #sidebar {
-        width: 250px;
+        width: 200px;
         min-height: 100vh;
+        background-color: #f8f9fa;
+        padding: 20px;
     }
 
-    #main-content {
-        flex: 1;
-        background-color: #fff;
+    .sidebar-title {
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
     .nav-link {
-        color: #555;
+        display: block;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
         margin-bottom: 10px;
-        font-size: 16px;
+        color: #555;
+        padding: 8px 10px;
+        border-radius: 5px;
+        transition: all 0.3s;
     }
 
     .nav-link:hover {
-        color: #ff6b6b;
+        background-color: #007bff;
+        color: #fff;
     }
 
+    /* Navbar */
+    .navbar-tabs {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #f4f4f7;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .navbar-tabs a {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 8px 20px;
+        color: #555;
+        border: 2px solid transparent;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+
+    .navbar-tabs a.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    /* Cards */
     .card {
+        border: 1px solid #ddd;
         border-radius: 10px;
-        border: none;
-        background-color: #f4f4f7;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .card h5,
-    .card p {
-        margin-bottom: 0;
-    }
-
-    .table {
+    .scrollable-container {
+        max-height: 600px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 18px;
+        border-radius: 10px;
         background-color: #fff;
-        border-radius: 10px;
-        overflow: hidden;
     }
 
-    .table th {
-        background-color: #f4f4f7;
+    .list-group-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    .custom-sidebar {
+        min-width: 40vh;
+    }
+    .sidebar-stat {
+        font-size: 18px;
+        margin-bottom: 15px;
+        text-align: left;
+        padding: 10px 0;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+        margin-bottom: 15px;
+    }
+    .btn-edit-profile {
+        display: block; /* Makes each button take a new line */
+        width: fit-content; /* Adjusts the button width to its content */
+        margin-bottom: 10px; /* Adds spacing between buttons */ 
     }
 </style>
 
-<div class="d-flex">
-    <div id="sidebar" class="bg-light p-4">
-        <h4 class="mb-4">Hello {{ request.user.company.company_name }}!</span></h4>
-        <ul class="nav flex-column">
-            <li class="nav-item"><a href="/company/" class="nav-link">Dashboard</a></li>
-            <li class="nav-item"><a href="/postjob/" class="nav-link">Post Job</a></li>
-            <li class="nav-item"><a href="/postinternship/" class="nav-link">Post Internship</a></li>
-            <li class="nav-item"><a href="/editcompany/" class="nav-link">Profile</a></li>
-            <li class="nav-item"><a href="/logout/" class="nav-link material-symbols-sharp">Logout</a></li>
-        </ul>
+<div class="d-flex container-fluid">
+    <div id="sidebar" class="p-4 custom-sidebar">
+        <div class="text-center">
+            <img 
+                src="{{ request.user.company.profile_picture.url }}" 
+                alt="{{ request.user.company.user.first_name }}" 
+                class="profile-picture"
+            />
+            <h4 class="student-name">{{ request.user.company.user.first_name }}</h4>
+        </div>
+
+        <div class="sidebar-stat">
+            <strong>Jobs Applications:</strong> {{ jobs.count  }}
+        </div>
+        <div class="sidebar-stat">
+            <strong>Internships Applications:</strong> {{ internships.count }}
+        </div>
+        <div class="sidebar-stat">
+            <strong>Total Applications:</strong> {{ ajobs.count|add:internships.count }}
+        </div>
+        <a href="/postjob/" class="btn btn-primary btn-edit-profile">Post Job</a>
+        <a href="/postinternship/" class="btn btn-primary btn-edit-profile">Post Internship</a>
+        <a href="/editstudent/" class="btn btn-primary btn-edit-profile">Edit Profile</a>
     </div>
-    <!-- Main Content -->
-    <div id="main-content" class="container-fluid p-4">
-        <div class="d-flex justify-content-between mb-4">
-            <h2>Company Dashboard</h2>
-            <input type="text" class="form-control w-25" placeholder="Search">
-        </div>
 
-        <!-- Cards for Total Sales, Customers, Employees -->
-        <div class="row text-center">
-            <div class="col-md-4">
-                <div class="card p-4 shadow-sm">
-                    <h5>Total Job Applications</h5>
-                    <p class="display-6">{{ jobs.count }}</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-4 shadow-sm">
-                    <h5>Total Internship Applications</h5>
-                    <p class="display-6">{{ internships.count }}</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card p-4 shadow-sm">
-                    <h5>Total Applications</h5>
-                    <p class="display-6">{{ jobs.count|add:internships.count }}</p>
-                </div>
+    <div id="main-content" class="flex-grow-1 p-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Greeting Message -->
+            <h1 class="mb-0">WelCome, {{ request.user.company.user.first_name }}</h1>
+    
+            <!-- Navbar Tabs -->
+            <div class="navbar-tabs">
+                <a href="#" class="tab-link active" data-target="jobs">Jobs</a>
+                <a href="#" class="tab-link" data-target="internships">Internships</a>
             </div>
         </div>
 
-        <div class="d-flex mt-4">
-            <div class="w-50 pr-3 mx-2">
-                <h5 class="text-center font-weight-bold mt-3">Your Posted Jobs</h5>
-                <ul class="list-group">
-                    {% for job in jobs %}
-                    <div class="my-3">
-                        <li class="list-group-item">
-                            <h6>{{ job.title }}</h6>
-                            <!-- <p>{{ job.description }}</p> -->
-                            <!-- <p><strong>Field:</strong> {{ job.field }}</p> -->
-                            <p><strong>Category:</strong> {{ job.category }}</p>
-                            <p><strong>Pay Range:</strong> {{ job.pay_range }} (Lac)</p>
-                            <p><strong>Location:</strong> {{ job.location }}</p>
-                            <p><strong>Expiry Date:</strong> {{ job.expiry_date }}</p>
-                            <!-- <p><strong>Skills:</strong> {{ job.skills }}</p> -->
-                            <div class="mt-2">
-                                <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-warning">Edit</a>
-                                <a href="{% url 'delete_job' job.id %}" class="btn btn-sm btn-danger">Delete</a>
-                                <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Applicants</a>
-                            </div>
-                        </li>
+        <!-- Jobs Section -->
+        <div class="scrollable-container card active" id="jobs">
+            <ul class="list-group">
+                {% for job in jobs %}
+                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                    <h6 style="font-weight: bold; font-size: 1.2rem;">{{ job.title }}</h6>
+                    <p><strong>Company:</strong> {{ job.company.company_name }}</p>
+                    <p><strong>Category:</strong> {{ job.category }}</p>
+                    <p><strong>Field:</strong> {{ job.field }}</p><br>
+                    <p><strong>Location:</strong> {{ job.location }}</p><br>
+                    <p><strong>Salary:</strong> {{ job.pay_range }}</p><br>
+                    <p><strong>Applied Date:</strong> {{ job.applied_date }}</p>
+                    <p><strong>Description:</strong> {{ job.description }}</p>
+                    <div class="mt-2">
+                        <a href="{% url 'edit_job' job.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_job' job.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="{% url 'job_applicants' job.id %}" class="btn btn-sm btn-info">View Applicants</a>
                     </div>
-                    {% empty %}
-                    <li class="list-group-item">No jobs posted yet.</li>
-                    {% endfor %}
-                </ul>
-            </div>
+                </li>
+                {% empty %}
+                <li class="list-group-item">No jobs posted yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-            <div class="w-50 pl-3">
-                <h5 class="text-center font-weight-bold mt-3">Your Posted Internships</h5>
-                <ul class="list-group">
-                    {% for internship in internships %}
-                    <div class="my-3">
-                        <li class="list-group-item">
-                            <h6>{{ internship.title }}</h6>
-                            <!-- <p>{{ internship.description }}</p> -->
-                            <!-- <p><strong>Field:</strong> {{ internship.field }}</p> -->
-                            <p><strong>Category:</strong> {{ internship.category }}</p>
-                            <p><strong>Stipend:</strong> {{ internship.stipend }} (Lac)</p>
-                            <p><strong>Location:</strong> {{ internship.location }}</p>
-                            <p><strong>Expiry Date:</strong> {{ internship.expiry_date }}</p>
-                            <!-- <p><strong>Skills:</strong> {{ internship.skills }}</p> -->
-                            <div class="mt-2">
-                                <a href="{% url 'edit_internship' internship.id %}" class="btn btn-sm btn-warning">Edit</a>
-                                <a href="{% url 'delete_internship' internship.id %}" class="btn btn-sm btn-danger">Delete</a>
-                                <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Applicants</a>
-                            </div>
-                        </li>
+        <!-- Internships Section -->
+        <div class="scrollable-container card" id="internships" style="display: none;">
+            <ul class="list-group">
+                {% for internship in internships %}
+                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                    <h6 style="font-weight: bold; font-size: 1.2rem;">{{ internship.title }}</h6>
+                    <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
+                    <p><strong>Stipend:</strong> {{ internship.stipend }} {{ internship.field }}</p>
+                    <p><strong>Field:</strong> {{ internship.field }}</p>
+                    <p><strong>Category:</strong> {{ internship.category }}</p>
+                    <p><strong>Location:</strong> {{ internship.location }}</p>
+                    <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
+                    <p><strong>Applied Date</strong>{{ internship.applied_date }}</p>
+                    <p><strong>Description: </strong>{{ internship.description }}</p>
+                    <div class="mt-2">
+                        <a href="{% url 'edit_internship' internship.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'delete_internship' internship.id %}" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="{% url 'internship_applicants' internship.id %}" class="btn btn-sm btn-info">View Applicants</a>
                     </div>
-                    {% empty %}
-                    <li class="list-group-item">No internships posted yet.</li>
-                    {% endfor %}
-                </ul>
-            </div>
+                </li>
+                {% empty %}
+                <li class="list-group-item">No internships posted yet.</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const sections = document.querySelectorAll('.card');
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Remove active classes
+                tabLinks.forEach(link => link.classList.remove('active'));
+                sections.forEach(section => section.style.display = 'none');
+
+                // Add active class to clicked link and target section
+                this.classList.add('active');
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+    });
+</script>
 
 {% endblock %}
