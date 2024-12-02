@@ -5,9 +5,9 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import Q
-
+import random
 
 def home(request):
     return render(request, 'index.html')
@@ -96,7 +96,19 @@ def student(request):
     student = request.user.student
     applied_jobs = Job.objects.filter(student_applied__has_key=str(student.id))
     applied_internships = Internship.objects.filter(student_applied__has_key=str(student.id))
-    return render(request, 'student.html', {'applied_jobs': applied_jobs, 'applied_internships': applied_internships})
+    student_tests = StudentTestData.objects.filter(student=student)
+
+    # Extract test details from SubjectTestData
+    test_details = []
+    for student_test in student_tests:
+        test = student_test.test
+        test_details.append({
+            'subject': test.subject,
+            'score': test.score,
+            'test_date': test.testDate
+        })
+    print(test_details)
+    return render(request, 'student.html', {'applied_jobs': applied_jobs, 'applied_internships': applied_internships, 'test_details':test_details})
 
 @login_required(login_url="/login/")
 def edit_student(request):
@@ -174,10 +186,10 @@ def internship_applicants(request, internship_id):
 @login_required(login_url="/login/")
 def company(request):
     company = request.user.company
-    # print("company",company)
     jobs = Job.objects.filter(company=company)
     internships = Internship.objects.filter(company=company)
-    return render(request, 'company.html', {'jobs': jobs, 'internships': internships})
+    students = Student.objects.all()
+    return render(request, 'company.html', {'jobs': jobs, 'internships': internships, 'students':students})
 
 
 @login_required(login_url="/login/")
@@ -314,6 +326,99 @@ def delete_internship(request, internship_id):
     return redirect('/company/')
 
 
+@login_required(login_url="/login/")
+def quiz(request):
+    if request.method == "POST":
+        if "subject" in request.POST:
+            # Handle subject selection
+            subject = request.POST["subject"]
+            questions = Question.objects.filter(subject=subject)
+            selected_questions = random.sample(
+                list(questions), min(len(questions), 10)
+            )
+            request.session['selected_questions'] = [
+                {
+                    'id': q.questionId,
+                    'question': q.question,
+                    'option_1': q.option_1,
+                    'option_2': q.option_2,
+                    'option_3': q.option_3,
+                    'option_4': q.option_4,
+                    'answer': q.correct_answer,  # Store the correct answer as 'A', 'B', etc.
+                }
+                for q in selected_questions
+            ]
+            return render(request, 'quiz.html', {
+                'questions': request.session['selected_questions'],
+                'subject': subject
+            })
+        else:
+            # Handle answer submission
+            user_answers = request.POST.dict()
+            selected_questions = request.session.get('selected_questions', [])
+            correct_count = 0
+            questions_with_answers = []  # This will store the question, user answer, and correct result
+
+            dic = {"option_1": "A", "option_2": "B", "option_3": "C", "option_4": "D"}
+
+            for question in selected_questions:
+                question_id = str(question['id'])
+                correct_answer = Question.objects.get(questionId=question_id).correct_answer  # Fetch the correct answer from DB
+                subject = Question.objects.get(questionId=question_id).subject
+                user_answer = user_answers.get(question_id)
+                
+                # Determine if the answer is correct
+                is_correct = dic.get(user_answer) == correct_answer
+                correct_count += 1 if is_correct else 0
+
+                # Save the question, user answer, and correct result
+                questions_with_answers.append({
+                    'question': question['question'],
+                    'user_answer': dic.get(user_answer),
+                    'correct_answer': correct_answer,
+                    'is_correct': is_correct
+                })
+
+            total_questions = len(selected_questions)
+            score = correct_count  # The score will be the number of correct answers
+
+            # Save the test result in the Test table
+            test = SubjectTestData.objects.create(
+                subject=subject,
+                score=score,
+                questions=questions_with_answers  # Store the questions and answers as JSON
+            )
+
+            # Update the StudentTest table
+            student_test, created = StudentTestData.objects.get_or_create(
+                student=request.user.student,
+                test=test
+            )
+
+            if subject == "Mathematics":
+                # If the test is Mathematics, update the score if it's higher
+                if student_test.mathematics_score < score:
+                    student_test.mathematics_score = score  # Update the score for Mathematics
+            elif subject == "Machine Learning":
+                # If the test is Machine Learning, update the score if it's higher
+                if student_test.machine_learning_score < score:
+                    student_test.machine_learning_score = score  # Update the score for Machine Learning
+
+            # Update test count and last test score
+            student_test.test_count += 1  # Increment the test count
+            student_test.last_test_score = score  # Update the most recent score
+            student_test.save()
+
+            return render(request, 'quiz.html', {
+                'result': True,
+                'correct_count': correct_count,
+                'total_questions': total_questions
+            })
+
+    # If GET request, display subject selection
+    subjects = Question.objects.values_list('subject', flat=True).distinct()
+    return render(request, 'quiz.html', {'subjects': subjects})
+
 def login_page(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -368,10 +473,10 @@ def signup(request):
 
             # Create account based on user type
             if user_type == "student":
-                Student.objects.create(user=user, email= email, student_name = first_name, college='', branch='', github='', linkedin='')
+                Student.objects.create(user=user, email= email, student_name = first_name, college='', branch='', github='', linkedin='', profile_picture='home/static/img/blank-profile.webp')
                 messages.success(request, "Student account created successfully")
             elif user_type == "company":
-                Company.objects.create(user=user, company_name=first_name, phone_number='', email=email, website='', location='')
+                Company.objects.create(user=user, company_name=first_name, phone_number='', email=email, website='', location='', profile_picture='home/static/img/blank-profile.webp')
                 messages.success(request, "Company account created successfully")
 
             return redirect("/login/")

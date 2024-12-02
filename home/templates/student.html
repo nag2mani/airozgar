@@ -154,6 +154,7 @@
         </div>
 
         <a href="/editstudent/" class="btn btn-primary btn-edit-profile">Edit Profile</a>
+        <a href="/quiz/" class="btn btn-primary btn-edit-profile">Test</a>
     </div>
 
     <div id="main-content" class="p-4 flex-grow-1">
@@ -167,6 +168,7 @@
                 <a href="#" class="tab-link active" data-target="jobs">Jobs</a>
                 <a href="#" class="tab-link" data-target="internships">Internships</a>
                 <a href="#" class="tab-link" data-target="bookmarks">Bookmarks</a>
+                <a href="#" class="tab-link" data-target="tests">Quiz</a>
             </div>
         </div>
     
@@ -227,29 +229,59 @@
                 {% endfor %}
             </ul>
         </div>
+
+        <!-- Quiz section -->
+        <div class="scrollable-container card active" id="tests" style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <h5 style="font-weight: bold; margin-bottom: 20px;">User Test Data</h5>
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Test Date</th>
+                        <th scope="col">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test in test_details %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ test.subject }}</td>
+                            <td>{{ test.test_date }}</td>
+                            <td>{{ test.score }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No test data available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+                
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const tabLinks = document.querySelectorAll('.tab-link');
-        const cards = document.querySelectorAll('.card');
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const cards = document.querySelectorAll('.card');
 
-        tabLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
+    tabLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
 
-                // Remove active class from all links and sections
-                tabLinks.forEach(link => link.classList.remove('active'));
-                cards.forEach(card => card.style.display = 'none');
+            // Remove active class from all links and sections
+            tabLinks.forEach(link => link.classList.remove('active'));
+            cards.forEach(card => card.style.display = 'none');
 
-                // Activate clicked link and corresponding section
-                this.classList.add('active');
-                const targetId = this.getAttribute('data-target');
-                document.getElementById(targetId).style.display = 'block';
-            });
+            // Activate clicked link and corresponding section
+            this.classList.add('active');
+            const targetId = this.getAttribute('data-target');
+            document.getElementById(targetId).style.display = 'block';
         });
     });
+});
 </script>
 
 {% endblock %}
