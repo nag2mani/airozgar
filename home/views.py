@@ -14,7 +14,7 @@ def home(request):
 
 
 def job(request):
-    jobs = Job.objects.all()
+    jobs = Job.objects.select_related('company').all()
     return render(request, 'job.html', {'jobs': jobs})
 
 
