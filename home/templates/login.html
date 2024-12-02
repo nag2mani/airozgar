@@ -20,16 +20,6 @@
 
                                 {% csrf_token %}
 
-                                {% if messages %}
-                                {{ message.tags }}
-                                <div class="alert alert-primary font-weight-bold" role="alert">
-                                    {% for message in messages %}
-                                    {{ message }}
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-
-
                                 <div class="form-group input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>

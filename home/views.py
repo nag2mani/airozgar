@@ -18,11 +18,6 @@ def job(request):
     return render(request, 'job.html', {'jobs': jobs})
 
 
-# def internship(request):
-#     internships = Internship.objects.all()
-#     return render(request, 'internship.html', {'internships': internships})
-
-
 def internship(request):
     # Get filter parameters from the request
     stipend_ranges = request.GET.getlist('stipend', [])
