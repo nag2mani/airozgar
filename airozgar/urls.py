@@ -38,6 +38,8 @@ urlpatterns = [
     path('deletejob/<int:job_id>/', delete_job, name='delete_job'),
     path('deleteinternship/<int:internship_id>/', delete_internship, name='delete_internship'),
 
+    path('quiz/', quiz, name='quiz'),
+
     path('admin/', admin.site.urls),
 ]
 

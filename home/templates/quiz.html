@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        form { margin-bottom: 20px; }
+        .question { margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 8px 12px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        .btn:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Get an edge over others by giving quiz!</h1>
+
+    {% if subjects %}
+    <!-- Subject Selection -->
+    <form method="post">
+        {% csrf_token %}
+        <h2>Select a Subject</h2>
+        <select name="subject" required>
+            <option value="">-- Select Subject --</option>
+            {% for subject in subjects %}
+            <option value="{{ subject }}">{{ subject }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Start Quiz</button>
+    </form>
+    {% endif %}
+
+    {% if questions %}
+    <!-- Display Questions -->
+    <h2>Answer the following questions:</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for question in questions %}
+        <div class="question">
+            <p><strong>{{ forloop.counter }}. {{ question.question }}</strong></p>
+            <label><input type="radio" name="{{ question.id }}" value="option_1" required> {{ question.option_1 }}</label><br>
+            <label><input type="radio" name="{{ question.id }}" value="option_2" required> {{ question.option_2 }}</label><br>
+            <label><input type="radio" name="{{ question.id }}" value="option_3" required> {{ question.option_3 }}</label><br>
+            <label><input type="radio" name="{{ question.id }}" value="option_4" required> {{ question.option_4 }}</label><br>
+        </div>
+        {% endfor %}
+        <button type="submit">Submit Answers</button>
+    </form>
+    {% endif %}
+
+    {% if result %}
+    <!-- Display Results -->
+    <h2>Quiz Results</h2>
+    <p>You answered {{ correct_count }} out of {{ total_questions }} questions correctly!</p>
+    <a href="">Try Another Quiz</a>
+    {% endif %}
+
+    <!-- Back to Dashboard Button -->
+    <a href="/student">
+        <button class="btn">Back to Dashboard</button>
+    </a>
+</body>
+</html>

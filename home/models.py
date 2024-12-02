@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.utils.timezone import now
 # Company table
 class Company(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Connect with the User model
@@ -98,3 +98,50 @@ class Internship(models.Model):
 
     def __str__(self):
         return f"{self.company} - {self.category}"
+
+class Question(models.Model):
+    # Question ID (Primary Key)
+    questionId = models.AutoField(primary_key=True)
+    
+    # Subject for the question (e.g., "Deep Learning", "Data Imputation")
+    subject = models.CharField(max_length=100)
+    
+    # The question text
+    question = models.TextField()
+    
+    # The options for the multiple-choice question
+    option_1 = models.CharField(max_length=255)
+    option_2 = models.CharField(max_length=255)
+    option_3 = models.CharField(max_length=255)
+    option_4 = models.CharField(max_length=255)
+    
+    # The correct answer, stored as the letter corresponding to the correct option
+    correct_answer = models.CharField(max_length=1)
+    
+    # The correct answer option text
+    correct_answer_option = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return f"Question {self.questionId}: {self.question}"
+
+    
+class SubjectTestData(models.Model):
+    testId = models.AutoField(primary_key=True)  # Auto-generated unique test ID
+    subject = models.CharField(max_length=100)  # The subject for the test
+    score = models.IntegerField(default=0)  # The score of the test
+    questions = models.JSONField()  # Store questions, answers, and results as a JSON
+    testDate = models.DateField(default=now)
+
+    def __str__(self):
+        return f"Test {self.testId} - {self.subject}"
+    
+class StudentTestData(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)  # Link to the student
+    test = models.ForeignKey(SubjectTestData, on_delete=models.CASCADE)  # Link to the test
+    test_count = models.IntegerField(default=0)  # Number of tests the student has taken
+    last_test_score = models.IntegerField(default=0)  # The most recent score of the student
+    mathematics_score = models.IntegerField(default=0)
+    machine_learning_score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.student.username} - Test {self.test.testId}"
