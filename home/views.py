@@ -153,11 +153,16 @@ def job_applicants(request, job_id):
     job = get_object_or_404(Job, id=job_id, company=request.user.company)
     applicants = []
     for student_id, application_details in job.student_applied.items():
-        student = get_object_or_404(Student, id=student_id)
-        applicants.append({
-            'student': student,
-            'application_details': application_details
-        })
+        try:
+            student = Student.objects.get(id=student_id)
+            applicants.append({
+                'student': student,
+                'application_details': application_details
+            })
+        except Student.DoesNotExist:
+            # Log the missing student, or handle as needed
+            print(f"Student with id {student_id} not found.")
+            continue  # Skip the student if not found
     return render(request, 'job_applicants.html', {'job': job, 'applicants': applicants})
 
 
@@ -202,11 +207,16 @@ def internship_applicants(request, internship_id):
     internship = get_object_or_404(Internship, id=internship_id, company=request.user.company)
     applicants = []
     for student_id, application_details in internship.student_applied.items():
-        student = get_object_or_404(Student, id=student_id)
-        applicants.append({
-            'student': student,
-            'application_details': application_details
-        })
+        try:
+            student = Student.objects.get(id=student_id)
+            applicants.append({
+                'student': student,
+                'application_details': application_details
+            })
+        except Student.DoesNotExist:
+            # Log the missing student, or handle as needed
+            print(f"Student with id {student_id} not found.")
+            continue  # Skip the student if not found
     return render(request, 'internship_applicants.html', {'internship': internship, 'applicants': applicants})
 
 

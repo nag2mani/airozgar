@@ -40,8 +40,8 @@
             <ul class="list-group">
                 {% for applicant in applicants %}
                 <div class="my-3">
-                    <li class="list-group-item list-group-item">
-                        <h6>{{ applicant.student.user.username }}</h6>
+                    <li class="list-group-item">
+                        <p><strong>Name:</strong> {{ applicant.student.user.first_name }}</p>
                         <p><strong>College:</strong> {{ applicant.student.college }}</p>
                         <p><strong>Branch:</strong> {{ applicant.student.branch }}</p>
                         <p><strong>GitHub:</strong> <a href="{{ applicant.student.github }}" target="_blank">Profile

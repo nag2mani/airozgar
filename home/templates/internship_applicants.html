@@ -1,13 +1,37 @@
-<!-- templates/internship_applicants.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internship Applicants</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block start %}
+
+<style>
+        .nav-link {
+        color: #555;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    .list-group-item {
+        border: 4px solid #ff5733;
+        /* Thick border with a color */
+        border-radius: 12px;
+        /* Rounded corners */
+        padding: 10px;
+        /* Add padding for a better look */
+        margin: 5px 0;
+        /* Add some spacing between items */
+    }
+
+    .nav-link:hover {
+        color: #ff6b6b;
+    }
+
+    .btn-status {
+        width: 100px;
+    }
+
+    .progress {
+        height: 25px;
+    }
+</style>
+
     <div class="container mt-5">
         <h1 class="text-center">Internship Applicants for {{ internship.title }}</h1>
         <div class="mt-4">
@@ -16,7 +40,7 @@
                 {% for applicant in applicants %}
                 <div class="my-3">
                     <li class="list-group-item">
-                        <h6>{{ applicant.student.user.username }}</h6>
+                        <p><strong>Name:</strong> {{ applicant.student.user.first_name }}</p>
                         <p><strong>College:</strong> {{ applicant.student.college }}</p>
                         <p><strong>Branch:</strong> {{ applicant.student.branch }}</p>
                         <p><strong>GitHub:</strong> <a href="{{ applicant.student.github }}" target="_blank">{{ applicant.student.github }}</a></p>
@@ -37,5 +61,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    {% endblock %}
