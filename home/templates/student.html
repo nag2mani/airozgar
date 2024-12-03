@@ -107,7 +107,6 @@
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-
     .custom-sidebar {
         min-width: 40vh;
     }
@@ -128,15 +127,11 @@
     }
 
     .list-group-item {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        /* Reduced margin */
-        padding: 10px;
-        /* Reduced padding */
-        font-size: 0.95rem;
-        /* Optional: Slightly smaller font size */
-    }
+    border: 4px solid #ff5733; /* Dark and thick border */
+    border-radius: 12px; /* Rounded corners */
+    padding: 10px; /* Add padding for a better look */
+    margin: 5px 0; /* Add some spacing between items */
+}
 
     .list-group-item:last-child {
         margin-bottom: 0;
@@ -182,50 +177,26 @@
         </div>
 
         <!-- Jobs Section -->
-        <div class="scrollable-container card active" id="jobs"
-            style="padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-            <ul class="list-group" style="gap: 20px;">
+        <div class="scrollable-container card active" id="jobs">
+            <ul class="list-group">
                 {% for job in applied_jobs %}
-                <!-- Individual Job Card -->
-                <li class="list-group-item"
-                    style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                <li class="list-group-item">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h6 style="font-weight: bold; font-size: 1.2rem;">{{ job.title }}</h6>
+                            <p><strong>Job Title: </strong>{{ job.title }}</p>
                             <p><strong>Company:</strong> {{ job.company.company_name }}</p>
                         </div>
                         <span
-                            class="badge {% if job.status == 'applied' %}bg-primary{% elif job.status == 'reviewed' %}bg-info{% elif job.status == 'shortlisted' %}bg-warning{% elif job.status == 'interviewed' %}bg-success{% elif job.status == 'selected' %}bg-danger{% else %}bg-secondary{% endif %}"
-                            style="font-size: 0.9rem;">
+                            class="badge {% if job.status == 'applied' %}bg-primary{% elif job.status == 'reviewed' %}bg-info{% elif job.status == 'shortlisted' %}bg-warning{% elif job.status == 'interviewed' %}bg-success{% elif job.status == 'selected' %}bg-danger{% else %}bg-secondary{% endif %}">
                             {{ job.status|default:"Applied"|title }}
                         </span>
                     </div>
-                    <p><strong>Category:</strong> {{ job.category }}</p>
-                    <p><strong>Field:</strong> {{ job.field }}</p>
                     <p><strong>Location:</strong> {{ job.location }}</p>
                     <p><strong>Salary:</strong> {{ job.pay_range }}</p>
-                    <p><strong>Applied Date:</strong> {{ job.applied_date }}</p>
                     <p><strong>Description:</strong> {{ job.description }}</p>
-
-                    <!-- Application Progress -->
-                    <div class="mt-3">
-                        <h6>Application Progress:</h6>
-                        <div class="progress" style="height: 25px;">
-                            {% with status=job.status|default:"applied" %}
-                            <div class="progress-bar bg-success" role="progressbar"
-                                style="width: {% if status == 'applied' %}20%{% elif status == 'reviewed' %}40%{% elif status == 'shortlisted' %}60%{% elif status == 'interviewed' %}80%{% elif status == 'selected' %}100%{% else %}0%{% endif %};"
-                                aria-valuenow="{% if status == 'applied' %}20{% elif status == 'reviewed' %}40{% elif status == 'shortlisted' %}60{% elif status == 'interviewed' %}80{% elif status == 'selected' %}100{% else %}0{% endif %}"
-                                aria-valuemin="0" aria-valuemax="100">
-                                {{ status|title }}
-                            </div>
-                            {% endwith %}
-                        </div>
-                    </div>
                 </li>
                 {% empty %}
-                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
-                    No jobs applied yet.
-                </li>
+                <li class="list-group-item">No jobs applied yet.</li>
                 {% endfor %}
             </ul>
         </div>
@@ -236,16 +207,15 @@
             style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
             <ul class="list-group" style="gap: 20px;">
                 {% for internship in applied_internships %}
-                <li class="list-group-item"
-                    style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
-                    <h6 style="font-weight: bold; font-size: 1.2rem;">{{ internship.title }}</h6>
+                <li class="list-group-item">
+                    <h6><strong>Internship Title: </strong> {{ internship.title }}</h6>
                     <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
                     <p><strong>Stipend:</strong> {{ internship.stipend }} {{ internship.field }}</p>
-                    <p><strong>Field:</strong> {{ internship.field }}</p>
-                    <p><strong>Category:</strong> {{ internship.category }}</p>
+                    <!-- <p><strong>Field:</strong> {{ internship.field }}</p> -->
+                    <!-- <p><strong>Category:</strong> {{ internship.category }}</p> -->
                     <p><strong>Location:</strong> {{ internship.location }}</p>
                     <p><strong>Stipend:</strong> {{ internship.stipend }}</p>
-                    <p><strong>Applied Date</strong>{{ internship.applied_date }}</p>
+                    <!-- <p><strong>Applied Date</strong>{{ internship.applied_date }}</p> -->
                     <p><strong>Description: </strong>{{ internship.description }}</p>
                 </li>
                 {% empty %}

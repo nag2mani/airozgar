@@ -217,11 +217,12 @@ def internship_applicants(request, internship_id):
 
 @login_required(login_url="/login/")
 def company(request):
-    company = request.user.company
+    company = get_object_or_404(Company, user=request.user)
+    # company = request.user.company
     jobs = Job.objects.filter(company=company)
     internships = Internship.objects.filter(company=company)
     students = Student.objects.all()
-    return render(request, 'company.html', {'jobs': jobs, 'internships': internships, 'students':students})
+    return render(request, 'company.html', {'jobs': jobs, 'internships': internships, 'students':students, 'company':company})
 
 
 @login_required(login_url="/login/")
