@@ -15,11 +15,13 @@ def home(request):
 
 
 def job(request):
+    company = get_object_or_404(Company, user=request.user)
     jobs = Job.objects.select_related('company').all()
-    return render(request, 'job.html', {'jobs': jobs})
+    return render(request, 'job.html', {'jobs': jobs, 'company':company})
 
 
 def internship(request):
+    company = get_object_or_404(Company, user=request.user)
     # Get filter parameters from the request
     stipend_ranges = request.GET.getlist('stipend', [])
     category = request.GET.get('category', '')
@@ -57,7 +59,7 @@ def internship(request):
     if location:
         internships = internships.filter(location__icontains=location)
 
-    return render(request, 'internship.html', {'internships': internships})
+    return render(request, 'internship.html', {'internships': internships, 'company':company})
 
 
 def contest(request):

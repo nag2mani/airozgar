@@ -264,12 +264,17 @@
                             data-category="{{ job.category }}" data-location="{{ job.location }}">
                             <div class="card job-card p-3">
                                 <div class="d-flex align-items-start">
-                                    <!-- Left side (Company image, Company name) -->
-                                    <div class="company-info d-flex flex-column align-items-center">
-                                        <img src="" alt="Company Logo" class="company-logo mb-2">
-                                        <span class="company-name">{{ job.company_name }}</span>
+                                    {% if company.profile_picture %}
+                                    <div class="text-center mb-4">
+                                        <img src="{{ company.profile_picture.url }}" alt="Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
                                     </div>
-
+                                    {% else %}
+                                    <div class="text-center mb-4">
+                                        <img src="https://via.placeholder.com/150" alt="Default Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <span class="company-name">{{ job.company_name }}</span>
                                     <!-- Middle Section (Job Title, Job Description) -->
                                     <div class="job-info flex-grow-1 ms-3">
                                         <!-- Job Title -->
