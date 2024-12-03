@@ -273,6 +273,9 @@ def postjob(request):
 
     return render(request, 'postjob.html')
 
+@login_required(login_url="/login/")
+def hardapply(request):
+    return render(request, 'hardapply.html')
 
 @login_required(login_url="/login/")
 def postinternship(request):
