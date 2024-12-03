@@ -9,19 +9,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.db.models import Q
 import random
+from django.contrib.auth.models import AnonymousUser
 
 def home(request):
     return render(request, 'index.html')
 
 
 def job(request):
-    company = get_object_or_404(Company, user=request.user)
     jobs = Job.objects.select_related('company').all()
-    return render(request, 'job.html', {'jobs': jobs, 'company':company})
+
+    return render(request, 'job.html', {'jobs': jobs})
 
 
 def internship(request):
-    company = get_object_or_404(Company, user=request.user)
     # Get filter parameters from the request
     stipend_ranges = request.GET.getlist('stipend', [])
     category = request.GET.get('category', '')
@@ -59,7 +59,7 @@ def internship(request):
     if location:
         internships = internships.filter(location__icontains=location)
 
-    return render(request, 'internship.html', {'internships': internships, 'company':company})
+    return render(request, 'internship.html', {'internships': internships})
 
 
 def contest(request):
@@ -160,15 +160,7 @@ def job_applicants(request, job_id):
         })
     return render(request, 'job_applicants.html', {'job': job, 'applicants': applicants})
 
-# @login_required(login_url="/login/")
-# def update_application_status(request, job_id, student_id):
-#     if request.method == 'POST' and request.is_ajax():
-#         job = get_object_or_404(Job, id=job_id, company=request.user.company)
-#         new_status = request.POST.get('status')
-#         if new_status in dict(Job.APPLICATION_STATUS_CHOICES).keys():
-#             job.update_application_status(student_id, new_status)
-#             return JsonResponse({'success': True})
-#     return JsonResponse({'success': False})
+
 @login_required(login_url="/login/")
 def update_application_status(request, job_id, student_id):
     if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -203,6 +195,7 @@ def apply_internship(request, internship_id):
     else:
         messages.info(request, "You have already applied for this internship.")
     return redirect('/internship/')
+
 
 @login_required(login_url="/login/")
 def internship_applicants(request, internship_id):

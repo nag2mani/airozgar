@@ -245,11 +245,15 @@
                              data-internship-type="{{ internship.type }}">
                             <div class="card internship-card p-3">
                                 <div class="d-flex align-items-start">
-                                    <!-- Company Info -->
-                                    <div class="company-info d-flex flex-column align-items-center">
-                                        <img src={{company.profile_picture.url}} alt="Company Logo" class="company-logo mb-2">
-                                        <span class="company-name">{{ internship.company.name }}</span>
+                                    {% if company.profile_picture %}
+                                    <div class="text-center mb-4">
+                                        <img src="{{ company.profile_picture.url }}" alt="Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
                                     </div>
+                                    {% else %}
+                                    <div class="text-center mb-4">
+                                        <img src="https://via.placeholder.com/150" alt="Default Profile Picture" class="rounded-circle img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
+                                    </div>
+                                    {% endif %}
                                     <!-- Internship Info -->
                                     <div class="internship-info flex-grow-1 ms-3">
                                         <h5 class="internship-title">{{ internship.title }}</h5>

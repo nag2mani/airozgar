@@ -9,13 +9,6 @@
                         <h1 class="text-center mb-4">Post an Internship</h1>
                         <form method="POST">
                             {% csrf_token %}
-                            {% if messages %}
-                            <div class="alert alert-primary font-weight-bold" role="alert">
-                                {% for message in messages %}
-                                {{ message }}
-                                {% endfor %}
-                            </div>
-                            {% endif %}
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" class="form-control" id="title" name="title" required>

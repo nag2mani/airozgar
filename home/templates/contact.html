@@ -13,15 +13,6 @@
                 <div class="wow fadeInUp" data-wow-delay="0.3s">
                     <form method="post">
                         {% csrf_token %}
-
-                        {% if messages %}
-                        {{ message.tags }}
-                        <div class="alert alert-primary font-weight-bold" role="alert">
-                            {% for message in messages %}
-                            {{ message }}
-                            {% endfor %}
-                        </div>
-                        {% endif %}
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
