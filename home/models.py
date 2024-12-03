@@ -76,8 +76,20 @@ class Job(models.Model):
     expiry_date = models.DateField()
     created_date = models.DateField(auto_now_add=True)
     skills = models.TextField()
-    student_applied = models.JSONField()  # To store hashmap of students applied
+    APPLICATION_STATUS_CHOICES = [
+            ('applied', 'Applied'),
+            ('reviewed', 'Reviewed'),
+            ('shortlisted', 'Shortlisted'),
+            ('interviewed', 'Interviewed'),
+            ('selected', 'Selected'),
+        ]
+    student_applied = models.JSONField(default=dict)
 
+    def update_application_status(self, student_id, status):
+            if str(student_id) in self.student_applied:
+                self.student_applied[str(student_id)]['status'] = status
+                self.save()
+                
     def __str__(self):
         return f"{self.company} - {self.category}"
 

@@ -85,6 +85,7 @@
         gap: 20px;
         font-size: 1.1rem;
     }
+
     .navbar-tabs .tab-link {
         text-decoration: none;
         color: #007bff;
@@ -93,20 +94,24 @@
         border-radius: 5px;
         transition: all 0.3s;
     }
+
     .navbar-tabs .tab-link.active {
         background-color: #007bff;
         color: #fff;
         border: 1px solid #007bff;
     }
+
     .card {
         border: 1px solid #ddd;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+
     .custom-sidebar {
         min-width: 40vh;
     }
+
     .scrollable-container {
         max-height: 600px;
         /* Adjust the height as needed */
@@ -117,29 +122,33 @@
         padding: 18px;
         /* Optional: Add padding for better appearance */
     }
+
     .internship-cards-section {
         margin-bottom: 30px;
     }
+
     .list-group-item {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 10px; /* Reduced margin */
-    padding: 10px; /* Reduced padding */
-    font-size: 0.95rem; /* Optional: Slightly smaller font size */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        /* Reduced margin */
+        padding: 10px;
+        /* Reduced padding */
+        font-size: 0.95rem;
+        /* Optional: Slightly smaller font size */
     }
+
     .list-group-item:last-child {
-        margin-bottom: 0; /* Remove extra margin for the last item */
+        margin-bottom: 0;
+        /* Remove extra margin for the last item */
     }
 </style>
 
 <div class="d-flex container-fluid">
     <div id="sidebar" class="p-4 custom-sidebar">
         <div class="text-center">
-            <img 
-                src="{{ request.user.student.profile_picture.url }}" 
-                alt="{{ request.user.student.user.first_name }}" 
-                class="profile-picture"
-            />
+            <img src="{{ request.user.student.profile_picture.url }}" alt="{{ request.user.student.user.first_name }}"
+                class="profile-picture" />
             <h4 class="student-name">{{ request.user.student.user.first_name }}</h4>
         </div>
 
@@ -162,7 +171,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <!-- Greeting Message -->
             <h1 class="mb-0">Hello, {{ request.user.student.user.first_name }}!</h1>
-    
+
             <!-- Navbar Tabs -->
             <div class="navbar-tabs">
                 <a href="#" class="tab-link active" data-target="jobs">Jobs</a>
@@ -171,36 +180,64 @@
                 <a href="#" class="tab-link" data-target="tests">Quiz</a>
             </div>
         </div>
-    
+
         <!-- Jobs Section -->
-        <div class="scrollable-container card active" id="jobs" style="padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                <ul class="list-group" style="gap: 20px;">
-                    {% for job in applied_jobs %}
-                    <!-- Individual Job Card -->
-                    <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
-                        <h6 style="font-weight: bold; font-size: 1.2rem;">{{ job.title }}</h6>
-                        <p><strong>Company:</strong> {{ job.company.company_name }}</p>
-                        <p><strong>Category:</strong> {{ job.category }}</p>
-                        <p><strong>Field:</strong> {{ job.field }}</p><br>
-                        <p><strong>Location:</strong> {{ job.location }}</p><br>
-                        <p><strong>Salary:</strong> {{ job.pay_range }}</p><br>
-                        <p><strong>Applied Date:</strong> {{ job.applied_date }}</p>
-                        <p><strong>Description:</strong> {{ job.description }}</p>
-                    </li>
-                    {% empty %}
-                    <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
-                        No jobs applied yet.
-                    </li>
-                    {% endfor %}
-                </ul>
+        <div class="scrollable-container card active" id="jobs"
+            style="padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <ul class="list-group" style="gap: 20px;">
+                {% for job in applied_jobs %}
+                <!-- Individual Job Card -->
+                <li class="list-group-item"
+                    style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h6 style="font-weight: bold; font-size: 1.2rem;">{{ job.title }}</h6>
+                            <p><strong>Company:</strong> {{ job.company.company_name }}</p>
+                        </div>
+                        <span
+                            class="badge {% if job.status == 'applied' %}bg-primary{% elif job.status == 'reviewed' %}bg-info{% elif job.status == 'shortlisted' %}bg-warning{% elif job.status == 'interviewed' %}bg-success{% elif job.status == 'selected' %}bg-danger{% else %}bg-secondary{% endif %}"
+                            style="font-size: 0.9rem;">
+                            {{ job.status|default:"Applied"|title }}
+                        </span>
+                    </div>
+                    <p><strong>Category:</strong> {{ job.category }}</p>
+                    <p><strong>Field:</strong> {{ job.field }}</p>
+                    <p><strong>Location:</strong> {{ job.location }}</p>
+                    <p><strong>Salary:</strong> {{ job.pay_range }}</p>
+                    <p><strong>Applied Date:</strong> {{ job.applied_date }}</p>
+                    <p><strong>Description:</strong> {{ job.description }}</p>
+
+                    <!-- Application Progress -->
+                    <div class="mt-3">
+                        <h6>Application Progress:</h6>
+                        <div class="progress" style="height: 25px;">
+                            {% with status=job.status|default:"applied" %}
+                            <div class="progress-bar bg-success" role="progressbar"
+                                style="width: {% if status == 'applied' %}20%{% elif status == 'reviewed' %}40%{% elif status == 'shortlisted' %}60%{% elif status == 'interviewed' %}80%{% elif status == 'selected' %}100%{% else %}0%{% endif %};"
+                                aria-valuenow="{% if status == 'applied' %}20{% elif status == 'reviewed' %}40{% elif status == 'shortlisted' %}60{% elif status == 'interviewed' %}80{% elif status == 'selected' %}100{% else %}0{% endif %}"
+                                aria-valuemin="0" aria-valuemax="100">
+                                {{ status|title }}
+                            </div>
+                            {% endwith %}
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+                    No jobs applied yet.
+                </li>
+                {% endfor %}
+            </ul>
         </div>
 
-    
+
         <!-- Internships Section -->
-        <div class="card scrollable-container" id="internships" style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <div class="card scrollable-container" id="internships"
+            style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
             <ul class="list-group" style="gap: 20px;">
                 {% for internship in applied_internships %}
-                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                <li class="list-group-item"
+                    style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
                     <h6 style="font-weight: bold; font-size: 1.2rem;">{{ internship.title }}</h6>
                     <p><strong>Company:</strong> {{ internship.company.company_name }}</p>
                     <p><strong>Stipend:</strong> {{ internship.stipend }} {{ internship.field }}</p>
@@ -216,12 +253,14 @@
                 {% endfor %}
             </ul>
         </div>
-    
+
         <!-- Bookmarks Section -->
-        <div class="card scrollable-container" id="bookmarks" style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <div class="card scrollable-container" id="bookmarks"
+            style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
             <ul class="list-group" style="gap: 20px;">
                 {% for bookmark in bookmarks %}
-                <li class="list-group-item" style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
+                <li class="list-group-item"
+                    style="border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; padding: 15px;">
                     <h6 style="font-weight: bold; font-size: 1.2rem;">{{ bookmark.title }}</h6>
                 </li>
                 {% empty %}
@@ -231,7 +270,8 @@
         </div>
 
         <!-- Quiz section -->
-        <div class="scrollable-container card active" id="tests" style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <div class="scrollable-container card active" id="tests"
+            style="display: none; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
             <h5 style="font-weight: bold; margin-bottom: 20px;">User Test Data</h5>
             <table class="table table-bordered">
                 <thead class="table-light">
@@ -244,44 +284,46 @@
                 </thead>
                 <tbody>
                     {% for test in test_details %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ test.subject }}</td>
-                            <td>{{ test.test_date }}</td>
-                            <td>{{ test.score }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center">No test data available.</td>
-                        </tr>
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ test.subject }}</td>
+                        <td>{{ test.test_date }}</td>
+                        <td>{{ test.score }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No test data available.</td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-                
+
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const tabLinks = document.querySelectorAll('.tab-link');
-    const cards = document.querySelectorAll('.card');
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const cards = document.querySelectorAll('.card');
 
-    tabLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
 
-            // Remove active class from all links and sections
-            tabLinks.forEach(link => link.classList.remove('active'));
-            cards.forEach(card => card.style.display = 'none');
+                // Remove active class from all links and sections
+                tabLinks.forEach(link => link.classList.remove('active'));
+                cards.forEach(card => card.style.display = 'none');
 
-            // Activate clicked link and corresponding section
-            this.classList.add('active');
-            const targetId = this.getAttribute('data-target');
-            document.getElementById(targetId).style.display = 'block';
+                // Activate clicked link and corresponding section
+                this.classList.add('active');
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).style.display = 'block';
+            });
         });
     });
-});
+
+
 </script>
 
 {% endblock %}

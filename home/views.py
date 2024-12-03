@@ -1,5 +1,6 @@
 from datetime import datetime
 from .models import *
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -156,6 +157,37 @@ def job_applicants(request, job_id):
             'application_details': application_details
         })
     return render(request, 'job_applicants.html', {'job': job, 'applicants': applicants})
+
+# @login_required(login_url="/login/")
+# def update_application_status(request, job_id, student_id):
+#     if request.method == 'POST' and request.is_ajax():
+#         job = get_object_or_404(Job, id=job_id, company=request.user.company)
+#         new_status = request.POST.get('status')
+#         if new_status in dict(Job.APPLICATION_STATUS_CHOICES).keys():
+#             job.update_application_status(student_id, new_status)
+#             return JsonResponse({'success': True})
+#     return JsonResponse({'success': False})
+@login_required(login_url="/login/")
+def update_application_status(request, job_id, student_id):
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        job = get_object_or_404(Job, id=job_id, company=request.user.company)
+        new_status = request.POST.get('status')
+        if new_status in dict(Job.APPLICATION_STATUS_CHOICES).keys():
+            job.update_application_status(student_id, new_status)
+            return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+
+@login_required(login_url="/login/")
+def student_applications(request):
+    student = request.user.student
+    applications = []
+    for job in Job.objects.filter(student_applied__has_key=str(student.id)):
+        status = job.student_applied[str(student.id)].get('status', 'Applied')
+        applications.append({
+            'job': job,
+            'status': status,
+        })
+    return render(request, 'student_applications.html', {'applications': applications})
 
 
 @login_required(login_url="/login/")

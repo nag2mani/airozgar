@@ -30,6 +30,8 @@ urlpatterns = [
     path('postjob/', postjob, name='postjob'),
     path('postinternship/', postinternship, name='postinternship'),
     path('job_applicants/<int:job_id>/', job_applicants, name='job_applicants'),
+    path('update-application-status/<int:job_id>/<int:student_id>/', update_application_status, name='update_application_status'),
+    path('student-applications/', student_applications, name='student_applications'),
     path('internship_applicants/<int:internship_id>/', internship_applicants, name='internship_applicants'),
 
     path('editjob/<int:job_id>/', edit_job, name='edit_job'),
