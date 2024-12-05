@@ -249,7 +249,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Subject</th>
                         <th scope="col">Test Date</th>
-                        <th scope="col">Score</th>
+                        <th scope="col">Score Out of 10</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -258,7 +258,7 @@
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ test.subject }}</td>
                         <td>{{ test.test_date }}</td>
-                        <td>{{ test.score }} out of 10</td>
+                        <td>{{ test.score }}</td>
                     </tr>
                     {% empty %}
                     <tr>
